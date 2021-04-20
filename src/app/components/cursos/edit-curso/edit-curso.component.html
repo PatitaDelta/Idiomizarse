@@ -1,0 +1,32 @@
+<div class="col">
+  <div class="card shadow-sm bg-dark">
+
+    <img src={{curso.image}} onerror="this.src='../../assets/defaultIMG.svg'"  width="100%" height="225">
+    <form class="card-body" [formGroup]="cursoForm" (ngSubmit)="onSubmit()">
+      <h5 class="card-title">
+        <input type="text" class="form-control" placeholder="Nombre"
+          formControlName="name">
+      </h5>
+
+      <textarea class="card-text form-control" placeholder="Descripción"
+        formControlName="description"
+      ></textarea>
+
+      <div class="d-flex justify-content-between align-items-center mt-3">
+        <div class="btn-group">
+          <button type="submit" class="btn btn-sm btn-outline-warning">Guardar</button>
+          <button type="button" class="btn btn-sm btn-outline-danger" (click)="deleteCurso()">Eliminar</button>
+          <button type="button" class="btn btn-sm btn-outline-primary" (click)="closeEditer()">Cancelar</button>
+
+        </div>
+        <small class="ms-2 text-muted align-self-start d-flex" formGroupName="time">
+          <input type="number" class="form-control" placeholder="h"
+            formControlName="hours">
+          <input type="number" class="form-control" placeholder="m"
+            formControlName="minutes">
+        </small>
+      </div>
+
+    </form>
+  </div>
+</div>

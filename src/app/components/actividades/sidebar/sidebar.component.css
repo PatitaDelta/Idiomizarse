@@ -1,0 +1,8 @@
+@media (max-width: 1150px) {
+    #sidebar {
+        margin-left: -250px;
+    }
+    #sidebar.active {
+        margin-left: 0;
+    }
+}
