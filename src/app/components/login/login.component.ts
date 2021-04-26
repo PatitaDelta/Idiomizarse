@@ -29,9 +29,10 @@ export class LoginComponent implements OnInit {
       "pass-group": new FormGroup({
         "password": new FormControl(null, [Validators.required, Validators.minLength(6)]),
         "confirm-pass": new FormControl(null)
-      }, [this.equalPassChild]),
+        // @ts-ignore
+      }, [this.equalItems('password', 'confirm-pass')]),
       "typeUser": new FormControl(null, [Validators.required]),
-    });
+    }, );
   }
 
   onClose() {
@@ -70,12 +71,16 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  equalPassChild(control: FormGroup) {
-    if (control.controls.password.value !== control.get("confirm-pass")!.value && localStorage.getItem("isLoggin") == "false") {
-      control.get("confirm-pass")!.setErrors({ "passwordNotEqual": true })
+  equalItems(item1:string, item2:string): {[key: string]: any}{
+    return (formGroup:any) => {
+
+      let a = formGroup.get(item1)?.value;
+      let b = formGroup.get(item2)?.value;
+        
+      if(a != b && this.myForm)
+        b.serErrors({"noEqual":true});
+      
+      b.serErrors(null);
     }
-
-    return null;
-
   }
 }

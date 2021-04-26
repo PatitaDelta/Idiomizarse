@@ -1,15 +1,15 @@
 export class Profesor {
   constructor(
     public email:string,
-    private password:string,
-    private fechaInicio:Date,
-    private id?:string,
-    private schedule?:string,
+    public password:string,
+    public fechaInicio:Date,
+    public id?:string,
+    public schedule?:string,
     public  name?:string,
-    private apellido1?:string,
-    private apellido2?:string,
+    public apellido1?:string,
+    public apellido2?:string,
     public  foto?:BinaryType,
-    private phone?:number,
-    private genero?:string,
+    public phone?:number,
+    public genero?:string,
   ){}
 }
