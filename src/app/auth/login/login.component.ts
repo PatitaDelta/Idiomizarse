@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+
 import { UserService } from 'src/app/services/user.service';
 import { Alumno } from '../../models/alumno';
 import { Profesor } from '../../models/profesor';
@@ -30,9 +31,9 @@ export class LoginComponent implements OnInit {
         "password": new FormControl(null, [Validators.required, Validators.minLength(6)]),
         "confirm-pass": new FormControl(null)
         // @ts-ignore
-      }, [this.equalItems('password', 'confirm-pass')]),
+      }, [this.equalPassChild]),
       "typeUser": new FormControl(null, [Validators.required]),
-    }, );
+    });
   }
 
   onClose() {
@@ -71,16 +72,12 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  equalItems(item1:string, item2:string): {[key: string]: any}{
-    return (formGroup:any) => {
-
-      let a = formGroup.get(item1)?.value;
-      let b = formGroup.get(item2)?.value;
-        
-      if(a != b && this.myForm)
-        b.serErrors({"noEqual":true});
-      
-      b.serErrors(null);
+  equalPassChild(control: FormGroup) {
+    if (control.controls.password.value !== control.get("confirm-pass")!.value && localStorage.getItem("isLoggin") == "false") {
+      control.get("confirm-pass")!.setErrors({ "passwordNotEqual": true })
     }
+
+    return null;
+
   }
 }

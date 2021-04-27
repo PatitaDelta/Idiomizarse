@@ -1,14 +1,15 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class HttpService implements OnInit {
-  // private urlEndPoint: string = 'http://192.168.18.50:8080/api/';
-  private urlEndPoint: string = 'https://idiomizarsebd-default-rtdb.firebaseio.com/';
+  private urlEndPoint: string = environment.bd_url;
   private httpHeaders: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
 
   constructor(private http: HttpClient) { }
@@ -19,7 +20,7 @@ export class HttpService implements OnInit {
   //* GET ******************************************************************************************
   //************************************************************************************************
 
-  getAll(nameTable: string) {
+  getAll(nameTable: string): Observable<any[]> {
     return this.http.get<any>(this.urlEndPoint + "/" + nameTable + ".json")
       .pipe(
         map(response => {
@@ -34,7 +35,7 @@ export class HttpService implements OnInit {
       )
   }
 
-  getById(nameTable: string, id: string) {
+  getById(nameTable: string, id: string): Observable<any> {
     return this.http.get<{ [key: string]: any }>(this.urlEndPoint + "/" + nameTable+ "/"+ id + ".json")
       .pipe(
         map(response => {
@@ -49,7 +50,7 @@ export class HttpService implements OnInit {
       )
   }
 
-  getByEmail(nameTable: string, email: string) {
+  getByEmail(nameTable: string, email: string): Observable<any> {
     return this.http.get<{ [key: string]: any }>(this.urlEndPoint + "/" + nameTable+ "/"+ email + ".json")
       .pipe(
         map(response => {
@@ -69,7 +70,7 @@ export class HttpService implements OnInit {
   //* POST ******************************************************************************************
   //************************************************************************************************
 
-  post(nameTable: string, item: Object) {
+  post(nameTable: string, item: Object): Observable<any>  {
     return this.http.post(this.urlEndPoint + "/" + nameTable + ".json",
       item
     )
@@ -79,7 +80,7 @@ export class HttpService implements OnInit {
   //* PUT ******************************************************************************************
   //************************************************************************************************
 
-  putById(nameTable: string, item: Object, id:string){
+  putById(nameTable: string, item: Object, id:string): Observable<any> {
     return this.http.put(this.urlEndPoint + "/" + nameTable+ "/"+ id + ".json",
       item
     )
@@ -89,11 +90,11 @@ export class HttpService implements OnInit {
   //* DELETE ******************************************************************************************
   //************************************************************************************************
 
-  deleteAll(nameTable: string) {
+  deleteAll(nameTable: string): Observable<any>  {
     return this.http.delete(this.urlEndPoint + "/" + nameTable + ".json")
   }
 
-  deleteById(nameTable: string, id: string) {
+  deleteById(nameTable: string, id: string): Observable<any>  {
     return this.http.delete(this.urlEndPoint + "/" + nameTable+ "/"+ id + ".json")
   }
 

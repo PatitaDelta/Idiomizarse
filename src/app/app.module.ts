@@ -1,49 +1,32 @@
+import { ErrorComponent } from './pages/error/error.component';
+import { FormsModule } from '@angular/forms';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule,LOCALE_ID } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
-import { registerLocaleData } from '@angular/common';
-import '@angular/common/locales/global/es';
-import LocalesES from '@angular/common/locales/es'
+import { CommonModule } from '@angular/common';
 
-import { AppRoutingModule } from './app-routing.module';
+import { AuthModule } from './auth/auth.module';
+import { SharedModule } from './shared/shared.module';
+
+import { AppRoutingModule } from './app.routing';
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './components/header/header.component';
-import { FooterComponent } from './components/footer/footer.component';
-import { LoginComponent } from './components/login/login.component';
-import { ActividadesComponent } from './components/actividades/actividades.component';
-import { CursosComponent } from './components/cursos/cursos.component';
-import { HomeComponent } from './components/home/home.component';
-import { SidebarComponent } from './components/actividades/sidebar/sidebar.component';
-import { CursoComponent } from './components/cursos/curso/curso.component';
-import { EditCursoComponent } from './components/cursos/edit-curso/edit-curso.component';
-
-
-registerLocaleData(LocalesES,'es');
+import { PagesModule } from './pages/pages.module';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent,
-    FooterComponent,
-    LoginComponent,
-    ActividadesComponent,
-    CursosComponent,
-    HomeComponent,
-    SidebarComponent,
-    CursoComponent,
-    EditCursoComponent,
+    ErrorComponent,
   ],
   imports: [
+    SharedModule,
+    PagesModule,
+    AuthModule,
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule,
-    ReactiveFormsModule,
+    CommonModule,
+    FormsModule,
   ],
-  providers: [
-    {provide: LOCALE_ID, useValue: 'es'}
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

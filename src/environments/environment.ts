@@ -3,7 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  bd_url: "https://idiomizarsebd-default-rtdb.firebaseio.com/"
+  //bd_Clase_url: string = 'http://192.168.18.50:8080/api/';
+
 };
 
 /*
