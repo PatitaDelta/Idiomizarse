@@ -24,28 +24,29 @@ export class UserService implements OnInit {
 
   //Seguramente esta funcion cambien en el futuro
   register(user: Alumno | Profesor, type: string) {
-    this.httpSer.post("alumnos",user);
+    this.httpSer.post("alumnos", user);
     user = this.foundAndPickUser(user, type)
     this.userSubject.next(user);
   }
 
-  logOut() {
-    localStorage.clear()
-  }
 
   foundAndPickUser(user: Alumno | Profesor, type: string): Alumno | Profesor {
     switch (type) {
       case "alumno":
-        if(this.httpSer.getByEmail("alumnos", user.email)){}
-          localStorage.setItem("alumno", JSON.stringify(user));
-          return user;
+        if (this.httpSer.getByEmail("alumnos", user.email)) { }
+        localStorage.setItem("alumno", JSON.stringify(user));
+        return user;
 
       case "profesor":
-        if(this.httpSer.getByEmail("profesores", user.email)){}
+        if (this.httpSer.getByEmail("profesores", user.email)) { }
         localStorage.setItem("profesor", JSON.stringify(user));
         return user;
     }
 
     return new Alumno("", "", new Date());
+  }
+  
+  logOut() {
+    localStorage.clear()
   }
 }

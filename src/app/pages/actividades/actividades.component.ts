@@ -21,7 +21,6 @@ export class ActividadesComponent implements OnInit {
   ngOnInit(): void {
     this.userSer.userSubject.subscribe((user)=>{
         this.user = user;
-        console.log("guardado")
     })
   }
 

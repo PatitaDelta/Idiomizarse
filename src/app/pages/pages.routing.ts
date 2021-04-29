@@ -3,7 +3,6 @@ import { CursosComponent } from './cursos/cursos.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
-import { EditCursoComponent } from './cursos/components/edit-curso/edit-curso.component';
 
 const ROUTES: Routes = [
     { path: '', redirectTo: '/inicio', pathMatch: 'full' },

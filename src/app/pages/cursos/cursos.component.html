@@ -1,20 +1,27 @@
-<article>
+<article style="min-height: 100vh;" class="bg-custom-dark">
 
   <!-- Buscador -->
 
-  <section>
-
+  <section class="container pt-5">
+      <form class="app-search d-flex">
+          <input 
+              #txtBuscador
+              type="text" 
+              class="form-control" 
+              placeholder="Buscar curso"
+              (change)="onSearch(txtBuscador.value)"
+          > 
+      </form>
   </section>
 
   <!-- Listado -->
 
-  <section class="album py-5 bg-light">
-    <div class="container"  style="color:white">
+  <section class="album py-5">
+    <div class="container" style="color:white">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-
         <app-curso [curso]="curso" [user]="userType" *ngFor="let curso of cursos"></app-curso>
 
-        <div class="col" *ngIf="userType == 'profesor'" (click)="openAddCurso()">
+        <div class="col" *ngIf="userType == 'profesor'" (click)="onAddCurso()">
           <div class="card shadow-sm bg-dark">
             <img width="100%" height="360" src="../../assets/defaultIMG.svg">
           </div>

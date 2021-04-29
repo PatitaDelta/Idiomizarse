@@ -4,24 +4,23 @@ import { Curso } from 'src/app/models/curso';
 @Component({
   selector: 'app-curso',
   templateUrl: './curso.component.html',
-  styleUrls: ['./curso.component.css']
 })
-export class CursoComponent implements OnInit {
+export class CursoComponent implements OnInit{
 
 
-  @Input() curso!:Curso;
+  @Input() curso!:Curso
   @Input("user") userType!:string;
 
-  editMode:boolean = false;
-
+  editMode!:boolean;
+  
   constructor() { }
-
+  
   ngOnInit(): void {
+    this.editMode = this.curso.id == '';
   }
 
-  onCloseEditer(event:Curso){
+  onCloseEditer(){
     this.editMode = false;
-    this.curso = event
   }
 
 }

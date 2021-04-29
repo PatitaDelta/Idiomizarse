@@ -8,3 +8,19 @@
 input.ng-invalid.ng-touched{
   border: 1px solid red;
 }
+
+.bg-custom-dark{
+  background-color: rgb(110,115,118);
+}
+
+.bg-custom-blue{
+  background-color: rgb(74, 137, 189);
+}
+
+.bg-custom-lightblue{
+  background-color: rgb(153,206,212);
+}
+
+.bg-custom-pink{
+  background-color: rgb(240, 170, 202);
+}

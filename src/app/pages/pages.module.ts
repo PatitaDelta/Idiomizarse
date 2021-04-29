@@ -11,7 +11,7 @@ import { CursoComponent } from './cursos/components/curso/curso.component';
 import { EditCursoComponent } from './cursos/components/edit-curso/edit-curso.component';
 import { ActividadesComponent } from './actividades/actividades.component';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -28,6 +28,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     PagesRoutingModule,
     CommonModule,
     ReactiveFormsModule,
+    FormsModule,
     AuthModule,
     SharedModule,
     HttpClientModule,

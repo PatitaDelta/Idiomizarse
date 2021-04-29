@@ -1,12 +1,11 @@
+import { CursosService } from '../../cursos.service';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Curso } from 'src/app/models/curso';
-import { HttpService } from 'src/app/services/http.service';
 
 @Component({
   selector: 'app-edit-curso',
   templateUrl: './edit-curso.component.html',
-  styleUrls: ['./edit-curso.component.css']
 })
 export class EditCursoComponent implements OnInit {
 
@@ -14,11 +13,9 @@ export class EditCursoComponent implements OnInit {
   @Output("close") editModeEmiter = new EventEmitter<Curso>();
   cursoForm!:FormGroup;
 
-  constructor(private httpSer:HttpService) { }
+  constructor(private cursosSer:CursosService) { }
 
   ngOnInit(): void {
-    console.log(this.curso);
-
     this.cursoForm = new FormGroup({
       "name" : new FormControl(this.curso.name),
       "description" : new FormControl(this.curso.description || ""),
@@ -31,37 +28,39 @@ export class EditCursoComponent implements OnInit {
   }
 
   closeEditer(){
-    this.editModeEmiter.emit(this.curso);
+    if(!this.curso.id)
+      this.cursosSer.deleteNullCurso(this.curso)
+
+    this.editModeEmiter.emit();
   }
 
   onSubmit(){
 
     this.curso = new Curso(
       this.cursoForm.value.name,
-      "",
-      0,
-      "",
+      this.curso.difficulty,
+      this.curso.price,
+      this.curso.id,
       this.cursoForm.value.description,
       this.cursoForm.get("time.hours")!.value,
       this.cursoForm.get("time.minutes")!.value,
       this.cursoForm.value.image,
     );
 
-    console.log(this.curso);
-
-    this.httpSer.post("cursos",this.curso).subscribe(
-      response =>{
-        console.log("enviado correctamente ",response);
-      },
-      responseError=>{
-        console.log("ha ocurrido un error ", responseError.error.error);
-      });
-
-    this.closeEditer();
+    
+    if(!this.curso.id)
+      this.cursosSer.addCurso(this.curso);
+    else
+      this.cursosSer.editCurso(this.curso);
+    
+    this.editModeEmiter.emit(this.curso);
   }
 
   deleteCurso(){
-    this.httpSer.deleteById("cursos", this.curso.id);
+    if(!this.curso.id)
+      this.cursosSer.deleteNullCurso(this.curso)
+    else
+      this.cursosSer.deleteCurso(this.curso);
   }
 
 }
