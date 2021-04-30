@@ -1,4 +1,3 @@
-import { OnInit } from '@angular/core';
 import { CursosService } from './cursos.service';
 import { Component, OnDestroy } from '@angular/core';
 
@@ -9,29 +8,29 @@ import { Subscription } from 'rxjs';
   selector: 'app-cursos',
   templateUrl: './cursos.component.html',
 })
-export class CursosComponent implements OnDestroy, OnInit{
+export class CursosComponent implements OnDestroy{
 
   cursos: Curso[] = [];
+  cursosFilter: Curso[] = [];
   cursosSubs!: Subscription;
 
   userType = localStorage.getItem("profesor") ? "profesor" : "alumno";
 
+  inputSearch = ""
+
   constructor(private cursosSer:CursosService) { 
     
     this.cursosSubs = this.cursosSer.getCursos$().subscribe(
-      list => this.cursos = list
+      list => {this.cursos = list; this.cursosFilter = list; this.inputSearch = ""}
     );    
   }
-  
-  ngOnInit(): void {
-  }
-  
+
   onAddCurso(){
-    this.cursos.push(new Curso("","",0,""))
+    this.cursosSer.addToEdit(new Curso("","",0,""))
   }
 
   onSearch(terms:string){
-    this.cursos = this.cursos.filter(curso => curso.name === terms);
+    this.cursos = this.cursosFilter.filter(curso => curso.name.includes(terms) );
   }
   
   ngOnDestroy(): void {

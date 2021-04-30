@@ -1,7 +1,7 @@
 <div class="col" >
   <div class="card shadow-sm bg-dark">
 
-    <app-edit-curso [curso]="curso" (close)="onCloseEditer()" *ngIf="editMode"></app-edit-curso>
+    <app-edit-curso [curso]="curso" (close)="onCloseEditer($event)" *ngIf="editMode"></app-edit-curso>
 
     <ng-container *ngIf="!editMode">
       <img src={{curso.image}} onerror="this.src='../../assets/defaultIMG.svg'"  width="100%" height="225">

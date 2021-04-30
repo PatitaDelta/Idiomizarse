@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { Curso } from 'src/app/models/curso';
 
 @Component({
@@ -11,16 +11,17 @@ export class CursoComponent implements OnInit{
   @Input() curso!:Curso
   @Input("user") userType!:string;
 
-  editMode!:boolean;
+  editMode:boolean = false;
   
   constructor() { }
   
   ngOnInit(): void {
-    this.editMode = this.curso.id == '';
+    this.editMode = this.curso.id == '' ||  this.curso.name == '';
   }
 
-  onCloseEditer(){
+  onCloseEditer(curso:Curso){
     this.editMode = false;
+    this.curso = curso;
   }
 
 }

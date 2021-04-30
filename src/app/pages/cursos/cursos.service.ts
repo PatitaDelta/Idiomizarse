@@ -23,10 +23,20 @@ export class CursosService {
         return this.cursos$;
     }
     
+    addToEdit(curso:Curso){
+        this.cursos.push(curso)
+        this.cursos$.next(this.cursos)
+    }
+
     addCurso(curso:Curso){
         this.httpSer.post("cursos",curso)
         .subscribe(
             (response)=>{
+                let pos = this.cursos.findIndex(c => c.id === "" )                
+                this.cursos[pos] = curso
+
+                this.cursos$.next(this.cursos)
+
                 Swal.fire({
                     title: 'Añadido',
                     text: 'Añadido correctamente',
@@ -50,10 +60,16 @@ export class CursosService {
         );
     }
 
-    editCurso(curso:Curso){        
+    editCurso(curso:Curso){     
+
         this.httpSer.putById("cursos",curso,curso.id)
         .subscribe(
             (response)=>{
+                //Al confirmar el guardado en la BD entonces EDITA en la lista
+                let pos = this.cursos.findIndex(c => c.id === curso.id )
+                this.cursos[pos] = curso
+                this.cursos$.next(this.cursos)
+                
                 Swal.fire({
                     title: 'Editado',
                     text: 'Editado correctamente',
@@ -94,6 +110,7 @@ export class CursosService {
         }).then((result) => {
 
             if (result.isConfirmed) {
+                //Al confirmar el guardado en la BD entonces ELIMINA de la lista
                 this.cursos.splice(this.cursos.indexOf(curso), 1)
                 this.cursos$.next(this.cursos)
 

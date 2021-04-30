@@ -1,6 +1,6 @@
 import { CursosService } from '../../cursos.service';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output, OnDestroy } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Curso } from 'src/app/models/curso';
 
 @Component({
@@ -17,7 +17,7 @@ export class EditCursoComponent implements OnInit {
 
   ngOnInit(): void {
     this.cursoForm = new FormGroup({
-      "name" : new FormControl(this.curso.name),
+      "name" : new FormControl(this.curso.name, [Validators.required]),
       "description" : new FormControl(this.curso.description || ""),
       "image" : new FormControl(this.curso.image || "../../assets/defaultIMG.svg"),
       "time": new FormGroup({
@@ -31,7 +31,7 @@ export class EditCursoComponent implements OnInit {
     if(!this.curso.id)
       this.cursosSer.deleteNullCurso(this.curso)
 
-    this.editModeEmiter.emit();
+    this.editModeEmiter.emit(this.curso);
   }
 
   onSubmit(){
@@ -47,7 +47,6 @@ export class EditCursoComponent implements OnInit {
       this.cursoForm.value.image,
     );
 
-    
     if(!this.curso.id)
       this.cursosSer.addCurso(this.curso);
     else
