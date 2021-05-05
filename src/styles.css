@@ -24,3 +24,12 @@ input.ng-invalid.ng-touched{
 .bg-custom-pink{
   background-color: rgb(240, 170, 202);
 }
+
+.fade-in {
+  animation: fadeIn 0.5s;
+  -webkit-animation: fadeIn 0.5s;
+}
+@keyframes fadeIn {
+  0% {opacity:0;}
+  100% {opacity:1;}
+}

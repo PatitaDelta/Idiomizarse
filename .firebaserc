@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "idiomizarsebd": {
+      "hosting": {
+        "idiomizarse": [
+          "idiomizarsebd"
+        ]
+      }
+    }
+  }
+}

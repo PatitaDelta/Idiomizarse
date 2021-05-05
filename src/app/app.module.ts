@@ -1,15 +1,19 @@
-import { ErrorComponent } from './pages/error/error.component';
-import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
+import { environment } from 'src/environments/environment';
+import { AngularFireModule } from '@angular/fire';
 
+import { AppRoutingModule } from './app.routing';
+import { FormsModule } from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
+import { PagesModule } from './pages/pages.module';
 import { AuthModule } from './auth/auth.module';
 import { SharedModule } from './shared/shared.module';
 
-import { AppRoutingModule } from './app.routing';
 import { AppComponent } from './app.component';
-import { PagesModule } from './pages/pages.module';
+import { ErrorComponent } from './pages/error/error.component';
+
+
 
 
 @NgModule({
@@ -25,6 +29,7 @@ import { PagesModule } from './pages/pages.module';
     AppRoutingModule,
     CommonModule,
     FormsModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
   ],
   providers: [],
   bootstrap: [AppComponent]

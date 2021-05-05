@@ -41,32 +41,16 @@ export class HttpService {
     return this.http.get<{ [key: string]: any }>(this.urlEndPoint + "/" + nameTable + "/" + id + ".json")
       .pipe(
         map(response => {
-          let returnArray = [];
+          let returnItem;
           for (let id in response) {
             if (response.hasOwnProperty(id)) {
-              returnArray.push({ id: id, ...response[id] })
+              returnItem = ({ id: id, ...response[id] })
             }
           }
-          return returnArray;
+          return returnItem;
         })
       )
   }
-
-  getByEmail(nameTable: string, email: string): Observable<any> {
-    return this.http.get<{ [key: string]: any }>(this.urlEndPoint + "/" + nameTable + "/" + email + ".json")
-      .pipe(
-        map(response => {
-          let returnArray = [];
-          for (let id in response) {
-            if (response.hasOwnProperty(id)) {
-              returnArray.push({ id: id, ...response[id] })
-            }
-          }
-          return returnArray;
-        })
-      )
-  }
-
 
   //************************************************************************************************
   //* POST ******************************************************************************************
