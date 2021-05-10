@@ -2,10 +2,28 @@
   <aside class="">
     <!-- class="collapse" -->
     <app-sidebar></app-sidebar>
+    
   </aside>
-  <section class="m-4 container" >
-    <div class="">
-      <p>hola</p>
-    </div>
+  <section class="m-4 container">
+    
+    <!-- Spinner ------------------------------------------------------------------------ -->
+    <ng-container *ngIf="myActividades.length <= 0">
+      <div class="col text-center" *ngIf="loading">
+        <app-spinner ></app-spinner>
+      </div>
+    </ng-container>
+
+    <!-- Content ------------------------------------------------------------------------ -->
+
+    <ng-container *ngIf="myActividades.length > 0">
+      <div class="col">
+        <div class="card fade-in" *ngFor="let actividad of myActividades">
+          <div class="card-header">
+            {{actividad}}
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
   </section>
 </article>

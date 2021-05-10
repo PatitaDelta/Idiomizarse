@@ -1,11 +1,10 @@
-import { Curso } from "./curso";
 
 export class Alumno {
   constructor(
     public email: string,
     public password: string,
     public fechaInicio: string,
-    public cursos:Curso[],
+    public cursos:string[],
     public id?: string,
     public uid?: string,
     public name?: string,

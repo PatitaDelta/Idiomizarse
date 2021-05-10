@@ -11,9 +11,12 @@ import { HttpService } from './http.service';
 })
 export class UserService implements OnInit {
 
-  isLogged = localStorage.getItem("profesor") || localStorage.getItem("alumno") ? true : false;
-  userSubject: Subject<Alumno | Profesor> = new Subject<Alumno | Profesor>()
   user: Alumno | Profesor = JSON.parse(localStorage.getItem("alumno") || localStorage.getItem("profesor")!)
+  userType = localStorage.getItem("alumno") ? "alumno" : "profesor" || localStorage.getItem("profesor") ? "profesor" : "alumno";
+    
+  userSubject: Subject<Alumno | Profesor> = new Subject<Alumno | Profesor>()
+  
+  isLogged = localStorage.getItem("profesor") || localStorage.getItem("alumno") ? true : false;
 
   constructor(private afAuth:AngularFireAuth, private http:HttpService) { }
 
@@ -22,6 +25,7 @@ export class UserService implements OnInit {
   logIn(user: Alumno | Profesor, type: "profesor"|"alumno") {
 
     let usrList:Alumno[] | Profesor[] = []
+    this.userType = type;
 
     //Guarda la lista del tipo de usr
     if(type == "alumno")
@@ -35,6 +39,7 @@ export class UserService implements OnInit {
       for(let usr of usrList){
         if(usr.uid === resp.user.uid){
           this.user = usr;
+          
           localStorage.setItem(type, JSON.stringify({...usr, password: ""}));
           this.userSubject.next(usr);
           break;

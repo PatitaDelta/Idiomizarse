@@ -17,10 +17,11 @@ export class HeaderComponent implements OnInit {
   constructor(public userSer:UserService, private router:Router) {this.user = userSer.user }
 
   ngOnInit(): void {
-    this.userSer.userSubject.subscribe((user)=>{
+    this.userSer.userSubject.subscribe((usr)=>{
         this.userSer.isLogged = true;
-        this.user = user
-    });
+        this.user = usr
+        localStorage.setItem(this.userSer.userType, JSON.stringify({...usr, password: ""}));
+      });
   }
 
   onLogout(){

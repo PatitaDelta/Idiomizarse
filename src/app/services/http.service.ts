@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, pipe } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map, retry, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -12,6 +12,14 @@ export class HttpService {
   private urlEndPoint: string = environment.bd_url;
   private httpHeaders: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
 
+  get url(){
+    return this.urlEndPoint
+  }
+
+  get headers(){
+    return this.httpHeaders
+  }
+
   constructor(private http: HttpClient) { }
 
 
@@ -20,7 +28,7 @@ export class HttpService {
   //************************************************************************************************
 
   getAll(nameTable: string): Observable<any[]> {
-    return this.http.get<{ [key: string]: any }>(this.urlEndPoint + "/" + nameTable + ".json")
+    return this.http.get<{ [key: string]: any }>(this.url + "/" + nameTable + ".json")
       .pipe(
         map((response) => {
           let returnArray = []; 
@@ -38,18 +46,11 @@ export class HttpService {
   }
 
   getById(nameTable: string, id: string): Observable<any> {
-    return this.http.get<{ [key: string]: any }>(this.urlEndPoint + "/" + nameTable + "/" + id + ".json")
-      .pipe(
-        map(response => {
-          let returnItem;
-          for (let id in response) {
-            if (response.hasOwnProperty(id)) {
-              returnItem = ({ id: id, ...response[id] })
-            }
-          }
-          return returnItem;
-        })
-      )
+    return this.http.get<{ [key: string]: any }>(this.url + "/" + nameTable + "/" + id + ".json")
+  }
+
+  getPropertyOf(nameTable: string, id:string, property:string): Observable<any>{    
+    return this.http.get<{ [key: string]: any }>(`${this.url}/${nameTable}/${id}/${property}.json`)
   }
 
   //************************************************************************************************
@@ -57,7 +58,7 @@ export class HttpService {
   //************************************************************************************************
 
   post(nameTable: string, item: any): Observable<any> {
-    return this.http.post(this.urlEndPoint + "/" + nameTable + ".json",
+    return this.http.post(this.url + "/" + nameTable + ".json",
       item
     ).pipe(
       map((resp:any) =>{
@@ -73,7 +74,7 @@ export class HttpService {
   //************************************************************************************************
 
   putById(nameTable: string, item: Object, id: string): Observable<any> {
-    return this.http.put(this.urlEndPoint + "/" + nameTable + "/" + id + ".json",
+    return this.http.put(this.url + "/" + nameTable + "/" + id + ".json",
       item
     )
   }
@@ -83,11 +84,11 @@ export class HttpService {
   //************************************************************************************************
 
   deleteAll(nameTable: string): Observable<any> {
-    return this.http.delete(this.urlEndPoint + "/" + nameTable + ".json")
+    return this.http.delete(this.url + "/" + nameTable + ".json")
   }
 
   deleteById(nameTable: string, id: string): Observable<any> {
-    return this.http.delete(this.urlEndPoint + "/" + nameTable + "/" + id + ".json")
+    return this.http.delete(this.url + "/" + nameTable + "/" + id + ".json")
   }
 
 }

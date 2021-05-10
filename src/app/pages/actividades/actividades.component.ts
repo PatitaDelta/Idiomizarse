@@ -1,27 +1,37 @@
-import { Component, OnInit } from '@angular/core';
+import { ActividadesService } from './actividades.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+
 import { Actividad } from 'src/app/models/actividad';
-import { Alumno } from 'src/app/models/alumno';
-import { Profesor } from 'src/app/models/profesor';
-import { UserService } from 'src/app/services/user.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-actividades',
   templateUrl: './actividades.component.html',
   styleUrls: ['./actividades.component.css']
 })
-export class ActividadesComponent implements OnInit {
+export class ActividadesComponent implements OnInit,OnDestroy {
 
-  public cursos!:Actividad[];
+  public myActividades:Actividad[] = [];
+  private myActividadesSubs!:Subscription;
 
-  private user!:Alumno | Profesor;
+  public loading:boolean = true;
 
-  constructor(private userSer:UserService) {
+  constructor(private actividadesSer:ActividadesService) {}
+  
+  ngOnInit(): void { 
+    this.getActividades();
+  }
+  
+  getActividades(){
+    this.myActividadesSubs = this.actividadesSer.getActividadesOf$().subscribe(
+      (list) =>{ 
+        this.myActividades = list;
+        this.loading = false;
+    })
   }
 
-  ngOnInit(): void {
-    this.userSer.userSubject.subscribe((user)=>{
-        this.user = user;
-    })
+  ngOnDestroy(): void {
+    this.myActividadesSubs.unsubscribe();
   }
 
 }

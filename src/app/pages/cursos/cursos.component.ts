@@ -15,18 +15,23 @@ export class CursosComponent implements OnDestroy{
   cursosSubs!: Subscription;
 
   userType = localStorage.getItem("profesor") ? "profesor" : "alumno";
-
+  
+  loading:boolean = true;
   inputSearch = ""
 
   constructor(private cursosSer:CursosService) { 
-    
-    this.cursosSubs = this.cursosSer.getCursos$().subscribe(
-      list => {this.cursos = list; this.cursosFilter = list; this.inputSearch = ""}
-    );    
+    this.getCursos();
   }
 
-  onAddCurso(){
-    this.cursosSer.addToEdit(new Curso("","",0,""))
+  getCursos(){
+    this.cursosSubs = this.cursosSer.getCursos$().subscribe(
+      list => {
+        this.cursos = list; 
+        this.cursosFilter = list; 
+        this.inputSearch = ""
+        this.loading = false
+      }
+    );
   }
 
   onSearch(terms:string){

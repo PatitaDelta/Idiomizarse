@@ -12,6 +12,8 @@ import { EditCursoComponent } from './cursos/components/edit-curso/edit-curso.co
 import { ActividadesComponent } from './actividades/actividades.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MisCursosComponent } from './cursos/components/mis-cursos/mis-cursos.component';
+import { DashboardCursosComponent } from './cursos/components/dashboard/dashboard.component';
 
 
 
@@ -21,8 +23,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     CursosComponent,
     CursoComponent,
     EditCursoComponent,
+    MisCursosComponent,
     ActividadesComponent,
     HomeComponent,
+    DashboardCursosComponent,
   ],
   imports: [
     PagesRoutingModule,
@@ -34,9 +38,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     HttpClientModule,
   ],
   exports:[
+    DashboardCursosComponent,
     CursosComponent,
     CursoComponent,
     EditCursoComponent,
+    MisCursosComponent,
     ActividadesComponent,
     HomeComponent,
   ]

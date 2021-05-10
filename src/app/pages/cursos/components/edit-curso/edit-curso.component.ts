@@ -41,6 +41,7 @@ export class EditCursoComponent implements OnInit {
       this.curso.difficulty,
       this.curso.price,
       this.curso.id,
+      this.curso.actividades,
       this.cursoForm.value.description,
       this.cursoForm.get("time.hours")!.value,
       this.cursoForm.get("time.minutes")!.value,
