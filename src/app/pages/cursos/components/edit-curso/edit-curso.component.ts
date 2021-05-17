@@ -37,10 +37,9 @@ export class EditCursoComponent implements OnInit {
   onSubmit(){
 
     this.curso = new Curso(
-      this.cursoForm.value.name,
-      this.curso.difficulty,
-      this.curso.price,
       this.curso.id,
+      this.cursoForm.value.name,
+      this.curso.idioma,
       this.curso.actividades,
       this.cursoForm.value.description,
       this.cursoForm.get("time.hours")!.value,

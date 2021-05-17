@@ -4,6 +4,8 @@ import { CursosService } from '../../cursos.service';
 
 import { Curso } from 'src/app/models/curso';
 import { Subscription } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { delay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-mis-cursos',
@@ -23,7 +25,7 @@ export class MisCursosComponent implements OnDestroy {
 
   inputSearch = ""
 
-  constructor(private cursosSer:CursosService) { 
+  constructor(private cursosSer:CursosService, private route:ActivatedRoute) { 
     this.getCursos();
   }
   
@@ -32,17 +34,25 @@ export class MisCursosComponent implements OnDestroy {
       this.myCursos = list; 
       this.myCursosFilter = list; 
 
-      this.inputSearch = ""
       this.loading = false
+
+      this.route.params.pipe(delay(250)).subscribe(params => {
+        if(params != undefined){
+          this.inputSearch = params.name;
+          this.onSearch(params.name);
+        }
+      })
+
     });
   }
 
   onAddCurso(){
-    this.cursosSer.addToEdit(new Curso("","",0,""))
+    this.cursosSer.addToEdit(new Curso("","",""))
   }
 
   onSearch(terms:string){
-    this.myCursos = this.myCursosFilter.filter(curso => curso.name.includes(terms));
+    if(terms != undefined)
+    this.myCursos = this.myCursosFilter.filter(curso => curso.name.toLowerCase().includes(terms.toLowerCase()) || curso.idioma.includes(terms.toLowerCase()));
   }
   
   ngOnDestroy(): void {

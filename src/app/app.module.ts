@@ -1,7 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { environment } from 'src/environments/environment';
+
 import { AngularFireModule } from '@angular/fire';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { AngularFireStorageModule } from '@angular/fire/storage';
 
 import { AppRoutingModule } from './app.routing';
 import { FormsModule } from '@angular/forms';
@@ -12,6 +15,7 @@ import { SharedModule } from './shared/shared.module';
 
 import { AppComponent } from './app.component';
 import { ErrorComponent } from './pages/error/error.component';
+
 
 
 
@@ -30,6 +34,9 @@ import { ErrorComponent } from './pages/error/error.component';
     CommonModule,
     FormsModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
+    // AngularFireAuth,
+    AngularFireDatabaseModule,
+    AngularFireStorageModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

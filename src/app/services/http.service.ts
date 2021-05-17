@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, pipe } from 'rxjs';
-import { map, retry, tap } from 'rxjs/operators';
+import { Observable, pipe, throwError } from 'rxjs';
+import { catchError, map, retry, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -76,6 +76,8 @@ export class HttpService {
   putById(nameTable: string, item: Object, id: string): Observable<any> {
     return this.http.put(this.url + "/" + nameTable + "/" + id + ".json",
       item
+    ).pipe(
+      catchError((err)=> throwError(err))
     )
   }
 

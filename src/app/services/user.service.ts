@@ -1,7 +1,7 @@
 import { AngularFireAuth } from '@angular/fire/auth'
 
 import { Injectable, OnInit } from '@angular/core';
-import { Subject, throwError } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Alumno } from '../models/alumno';
 import { Profesor } from '../models/profesor';
 import { HttpService } from './http.service';
@@ -11,24 +11,24 @@ import { HttpService } from './http.service';
 })
 export class UserService implements OnInit {
 
-  user: Alumno | Profesor = JSON.parse(localStorage.getItem("alumno") || localStorage.getItem("profesor")!)
-  userType = localStorage.getItem("alumno") ? "alumno" : "profesor" || localStorage.getItem("profesor") ? "profesor" : "alumno";
+  public user: Alumno | Profesor = JSON.parse(localStorage.getItem("alumno") || localStorage.getItem("profesor")!)
+  public userType:string = localStorage.getItem("alumno") ? "alumno" : "" || localStorage.getItem("profesor") ? "profesor" : ""
     
-  userSubject: Subject<Alumno | Profesor> = new Subject<Alumno | Profesor>()
+  public userSubject = new Subject<Alumno | Profesor>();
   
-  isLogged = localStorage.getItem("profesor") || localStorage.getItem("alumno") ? true : false;
+  public isLogged = localStorage.getItem("profesor") || localStorage.getItem("alumno") ? true : false;
 
   constructor(private afAuth:AngularFireAuth, private http:HttpService) { }
 
   ngOnInit(): void { }
 
   logIn(user: Alumno | Profesor, type: "profesor"|"alumno") {
-
+    
     let usrList:Alumno[] | Profesor[] = []
     this.userType = type;
 
-    //Guarda la lista del tipo de usr
-    if(type == "alumno")
+    //Coje la lista del tipo del usr
+    if(type == "alumno") 
       this.http.getAll("alumnos").subscribe(list => usrList = list)
     else if (type == "profesor")
       this.http.getAll("profesores").subscribe(list => usrList = list)
@@ -39,7 +39,6 @@ export class UserService implements OnInit {
       for(let usr of usrList){
         if(usr.uid === resp.user.uid){
           this.user = usr;
-          
           localStorage.setItem(type, JSON.stringify({...usr, password: ""}));
           this.userSubject.next(usr);
           break;
@@ -63,8 +62,11 @@ export class UserService implements OnInit {
     })
   }
   
-  deleteAcount(){
-    
+  updateUser(user: Alumno | Profesor){
+    if(this.userType == "profesor")
+      this.http.putById("profesores",user,user.id!).subscribe(() => this.userSubject.next(this.user))
+    else if(this.userType == "alumno")
+      this.http.putById("alumnos",user,user.id!).subscribe(() => this.userSubject.next(this.user))
   }
 
   logOut() {

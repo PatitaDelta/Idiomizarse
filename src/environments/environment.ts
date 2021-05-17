@@ -5,7 +5,8 @@
 export const environment = {
   production: false,
   bd_url: "https://idiomizarsebd-default-rtdb.firebaseio.com/",
-  bd_Clase_url: 'http://192.168.18.50:8080/api/',
+  // bd_Clase_url: 'http://192.168.18.50:8080/api/',
+  firebase_img_url:"https://firebasestorage.googleapis.com/v0/b/idiomizarsebd.appspot.com/o/",
   firebaseConfig : {
     apiKey: "AIzaSyA9iPcVUeytdjCcGGDYFH4URWEyVNpE4Dw",
     authDomain: "idiomizarsebd.firebaseapp.com",
@@ -15,7 +16,8 @@ export const environment = {
     messagingSenderId: "240872989897",
     appId: "1:240872989897:web:1379ba24288b06f2e45918",
     measurementId: "G-Q1K4PXG463"
-  }
+  },
+  
 
 };
 

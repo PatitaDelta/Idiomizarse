@@ -1,4 +1,3 @@
-
 export class Alumno {
   constructor(
     public email: string,
@@ -7,14 +6,11 @@ export class Alumno {
     public cursos:string[],
     public id?: string,
     public uid?: string,
+    public dni?:string,
     public name?: string,
-    public apellido1?: string,
-    public apellido2?: string,
-    public foto?: BinaryType,
-    public genero?: string,
+    public location?: string,
+    public phone?:number,
+    public foto?: string,
   ) { }
 
-  get fullName(){
-    return `${this.name} ${this.apellido1} ${this.apellido2} `; 
-  }
 }

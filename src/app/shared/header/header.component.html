@@ -51,7 +51,7 @@
               <strong>{{ user.name ? user.name : user.email }}</strong>
             </a>
             <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-              <li><a class="dropdown-item" >Perfil</a></li>
+              <li><a class="dropdown-item" routerLink="/perfil/{{user.id}}">Perfil</a></li>
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" (click)="onLogout()" *ngIf="this.userSer.isLogged">Cerrar sesión</a></li>
             </ul>

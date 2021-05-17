@@ -1,3 +1,4 @@
+import { ActivatedRoute } from '@angular/router';
 import { CursosService } from './cursos.service';
 import { Component, OnDestroy } from '@angular/core';
 
@@ -19,7 +20,7 @@ export class CursosComponent implements OnDestroy{
   loading:boolean = true;
   inputSearch = ""
 
-  constructor(private cursosSer:CursosService) { 
+  constructor(private cursosSer:CursosService, private route:ActivatedRoute) { 
     this.getCursos();
   }
 
@@ -28,14 +29,22 @@ export class CursosComponent implements OnDestroy{
       list => {
         this.cursos = list; 
         this.cursosFilter = list; 
-        this.inputSearch = ""
+
         this.loading = false
+
+        this.route.params.subscribe(params => {
+          if(params != undefined){
+            this.inputSearch = params.name
+            this.onSearch(params.name)
+          }
+        })
       }
     );
   }
 
   onSearch(terms:string){
-    this.cursos = this.cursosFilter.filter(curso => curso.name.includes(terms) );
+    if(terms != undefined)
+      this.cursos = this.cursosFilter.filter(curso => curso.name.toLowerCase().includes(terms.toLowerCase()) || curso.idioma.includes(terms.toLowerCase()) );
   }
   
   ngOnDestroy(): void {

@@ -9,8 +9,21 @@ input.ng-invalid.ng-touched{
   border: 1px solid red;
 }
 
+.myActive{
+  
+  background-color: #ffc107;
+}
+
 .bg-custom-dark{
   background-color: rgb(110,115,118);
+}
+
+.bg-custom-orange{
+  background-color: rgb(241, 98, 63);
+}
+
+.text-custom-orange{
+  color: rgb(241, 98, 63);
 }
 
 .bg-custom-blue{

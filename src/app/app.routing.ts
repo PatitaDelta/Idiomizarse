@@ -7,6 +7,7 @@ const ROUTES: Routes = [
   // '/inicio',     in    PagesRouting 
   // '/cursos',     in    PagesRouting 
   // '/actividades' in    PagesRouting 
+  // '/perfil',     in    PagesRouting 
   { path: '', redirectTo: '/inicio', pathMatch: 'full' },
   { path: '**', component: ErrorComponent },
 

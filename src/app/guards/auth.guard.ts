@@ -7,17 +7,21 @@ import { Injectable } from '@angular/core';
 })
 export class AuthGuard implements CanActivate {
 
-  constructor(private router:Router, private userSer:UserService){}
+  constructor(private router: Router, private userSer: UserService) { }
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot){
-
-    if(!this.userSer.isLogged){
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    
+    if (!this.userSer.isLogged) {
       this.router.navigate(["/inicio"]);
+      return false;
+    } 
+    else if (state.url.includes("/perfil/") && state.url.split("/")[2] !== this.userSer.user.id) {
+      this.router.navigate(["/error"]);
       return false;
     }
 
     return true;
 
   }
-  
+
 }

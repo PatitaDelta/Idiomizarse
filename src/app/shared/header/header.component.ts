@@ -1,3 +1,4 @@
+import { HttpService } from 'src/app/services/http.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Alumno } from 'src/app/models/alumno';
@@ -12,14 +13,23 @@ export class HeaderComponent implements OnInit {
 
   toLogin!:boolean;
   openForm:boolean = false;
+
   user!:Alumno | Profesor;
+  userType!:string;
 
-  constructor(public userSer:UserService, private router:Router) {this.user = userSer.user }
 
+  constructor(public userSer:UserService, private router:Router) { }
+  
   ngOnInit(): void {
+    this.user = this.userSer.user;
+    this.userType = this.userSer.userType;      
+
     this.userSer.userSubject.subscribe((usr)=>{
+        console.log(usr);
+        
         this.userSer.isLogged = true;
-        this.user = usr
+        this.user = usr;
+        this.userType = this.userSer.userType;
         localStorage.setItem(this.userSer.userType, JSON.stringify({...usr, password: ""}));
       });
   }
@@ -27,7 +37,8 @@ export class HeaderComponent implements OnInit {
   onLogout(){
     this.userSer.isLogged = false, this.openForm = false;
     this.userSer.logOut();
-    this.router.navigate(["/inicio"]);
+    
+    this.router.navigate(["/inicio"]).then(()=>window.location.reload());
   }
 
 }
