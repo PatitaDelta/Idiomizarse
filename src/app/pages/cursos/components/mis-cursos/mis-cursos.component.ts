@@ -36,8 +36,8 @@ export class MisCursosComponent implements OnDestroy {
 
       this.loading = false
 
-      this.route.params.pipe(delay(250)).subscribe(params => {
-        if(params != undefined){
+      this.route.params.pipe(delay(250)).subscribe(params => {        
+        if(params.name != undefined){
           this.inputSearch = params.name;
           this.onSearch(params.name);
         }
@@ -51,7 +51,7 @@ export class MisCursosComponent implements OnDestroy {
   }
 
   onSearch(terms:string){
-    if(terms != undefined)
+    this.inputSearch = terms;
     this.myCursos = this.myCursosFilter.filter(curso => curso.name.toLowerCase().includes(terms.toLowerCase()) || curso.idioma.includes(terms.toLowerCase()));
   }
   

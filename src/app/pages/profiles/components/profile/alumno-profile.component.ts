@@ -56,7 +56,6 @@ export class AlumnoProfileComponent implements OnInit, OnDestroy {
 
   onSubmit(){
     this.tongleEditMode();
-    this.editForm.get("foto")?.setValue("");
 
     if(this.imgToUpload)
       this.uploadImg(this.imgToUpload);
@@ -72,7 +71,10 @@ export class AlumnoProfileComponent implements OnInit, OnDestroy {
   }
 
   tongleEditMode(){
-    this.editMode = !this.editMode;    
+    this.imgTemp = null;
+    this.editForm.get("foto")?.setValue("");
+
+    this.editMode = !this.editMode;
   }
 
   changeImg(event:any){
