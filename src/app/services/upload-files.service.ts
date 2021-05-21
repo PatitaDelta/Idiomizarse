@@ -12,14 +12,14 @@ export class UploadFilesService {
 
   constructor() { }
 
-  async uploadImg(file:File,type:"users"|"actividades"|"cursos", id:string){
+  async uploadImg(file:File,type:"users"|"actividades"|"cursos", name:string){
 
     try {
       //Creacion de la referencia al storage de Firebase
       const storageRef = firebase.storage().ref();
 
       //Guarda en firebase el archivo
-      return await storageRef.child(`${type}/${id}`).put(file);
+      return await storageRef.child(`${type}/${name}`).put(file);
 
     } catch (error) {
       console.error("error en la subida de img");
@@ -27,11 +27,11 @@ export class UploadFilesService {
     }
   }
 
-  async downloadImg(type:"users"|"actividades"|"cursos", id:string){
+  async downloadImg(type:"users"|"actividades"|"cursos", name:string){
 
     try {
       //Creacion de la referencia al storage de Firebase
-      const storageRef = firebase.storage().refFromURL(`gs://idiomizarsebd.appspot.com/${type}/${id}`)
+      const storageRef = firebase.storage().refFromURL(`gs://idiomizarsebd.appspot.com/${type}/${name}`)
 
       //Guarda en firebase el archivo
       return await storageRef.getDownloadURL()
@@ -42,13 +42,13 @@ export class UploadFilesService {
 
   }
 
-  async deleteImg(type:"users"|"actividades"|"cursos", id:string){
+  async deleteImg(type:"users"|"actividades"|"cursos", name:string){
     try {
       //Creacion de la referencia al storage de Firebase
       const storageRef = firebase.storage().ref();
 
       //Elimina en firebase el archivo
-      return await storageRef.child(`${type}/${id}`).delete()
+      return await storageRef.child(`${type}/${name}`).delete()
 
     }catch(error){
       console.error("error al borrar de img");

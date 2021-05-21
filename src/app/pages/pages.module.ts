@@ -21,6 +21,10 @@ import { DashboardCursosComponent } from './cursos/components/dashboard/dashboar
 
 //Actividades
 import { ActividadesComponent } from './actividades/actividades.component';
+import { DashboardActividadesComponent } from './actividades/components/dashboard/dashboard.component';
+import { DescargarActividadesComponent } from './actividades/components/descargar/descargar.component';
+import { CrearActividadesComponent } from './actividades/components/crear/crear.component';
+import { EditarActividadesComponent } from './actividades/components/editar/editar.component';
 
 
 @NgModule({
@@ -34,6 +38,10 @@ import { ActividadesComponent } from './actividades/actividades.component';
     ProfileComponent,
     AlumnoProfileComponent,
     ActividadesComponent,
+    DashboardActividadesComponent,
+    CrearActividadesComponent,
+    DescargarActividadesComponent,
+    EditarActividadesComponent,
   ],
   imports: [
     PagesRoutingModule,

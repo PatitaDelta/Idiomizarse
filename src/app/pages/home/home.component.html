@@ -66,7 +66,7 @@
       <h2>Heading</h2>
       <p>Some representative placeholder content for the three columns of text below the carousel. This is the first
         column.</p>
-      <p><a class="btn btn-warning" [routerLink]="'/cursos/todos/Frances'">Ver detalles</a></p>
+      <p *ngIf="this.userSer.isLogged" ><a class="btn btn-warning" [routerLink]="'/cursos/todos/Frances'">Ver detalles</a></p>
     </div>
     
     <!-- /.col-lg-4 -->
@@ -75,7 +75,7 @@
       <img src="../../../assets/bandera_inglesa.jpg" class="rounded-circle" width="115" height="115">
       <h2>Heading</h2>
       <p>Another exciting bit of representative placeholder content. This time, we've moved on to the second column.</p>
-      <p><a class="btn btn-warning" [routerLink]="'/cursos/todos/Ingles'">Ver detalles</a></p>
+      <p *ngIf="this.userSer.isLogged" ><a class="btn btn-warning" [routerLink]="'/cursos/todos/Ingles'">Ver detalles</a></p>
     </div>
     
     <!-- /.col-lg-4 -->
@@ -85,7 +85,7 @@
 
       <h2>Heading</h2>
       <p>And lastly this, the third column of representative placeholder content.</p>
-      <p><a class="btn btn-warning" [routerLink]="'/cursos/todos/Español'">Ver detalles</a></p>
+      <p *ngIf="this.userSer.isLogged"><a class="btn btn-warning" [routerLink]="'/cursos/todos/Español'">Ver detalles</a></p>
     </div><!-- /.col-lg-4 -->
   
   </div><!-- /.row -->

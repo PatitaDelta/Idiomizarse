@@ -1,37 +1,16 @@
-import { ActividadesService } from './actividades.service';
-import { Component, OnDestroy, OnInit } from '@angular/core';
-
-import { Actividad } from 'src/app/models/actividad';
-import { Subscription } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-actividades',
   templateUrl: './actividades.component.html',
-  styleUrls: ['./actividades.component.css']
+  styles:[],
 })
-export class ActividadesComponent implements OnInit,OnDestroy {
+export class ActividadesComponent implements OnInit {
 
-  public myActividades:Actividad[] = [];
-  private myActividadesSubs!:Subscription;
+  constructor() {}
 
-  public loading:boolean = true;
-
-  constructor(private actividadesSer:ActividadesService) {}
-  
-  ngOnInit(): void { 
-    this.getActividades();
+  ngOnInit(): void {
   }
   
-  getActividades(){
-    this.myActividadesSubs = this.actividadesSer.getActividadesOf$().subscribe(
-      (list) =>{ 
-        this.myActividades = list;
-        this.loading = false;
-    })
-  }
-
-  ngOnDestroy(): void {
-    this.myActividadesSubs.unsubscribe();
-  }
 
 }

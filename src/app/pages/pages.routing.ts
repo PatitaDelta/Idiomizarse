@@ -15,6 +15,10 @@ import { AlumnoProfileComponent } from './profiles/components/profile/alumno-pro
 
 //Actividaes
 import { ActividadesComponent } from './actividades/actividades.component';
+import { DashboardActividadesComponent } from './actividades/components/dashboard/dashboard.component';
+import { DescargarActividadesComponent } from './actividades/components/descargar/descargar.component';
+import { EditarActividadesComponent } from './actividades/components/editar/editar.component';
+import { CrearActividadesComponent } from './actividades/components/crear/crear.component';
 
 
 const ROUTES: Routes = [
@@ -40,10 +44,10 @@ const ROUTES: Routes = [
     { path: 'actividades', component: ActividadesComponent,
         canActivate: [AuthGuard],
         children: [
-            { path: '', component: ActividadesComponent},
-            { path: 'descargar', component: ActividadesComponent},
-            { path: 'crear', component: ActividadesComponent },
-            { path: 'editar', component: ActividadesComponent },
+            { path: '', component: DashboardActividadesComponent },
+            { path: 'descargar', component: DescargarActividadesComponent},
+            { path: 'crear', component: CrearActividadesComponent },
+            { path: 'editar', component: EditarActividadesComponent },
         ]},
     
 ];

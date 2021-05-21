@@ -10,5 +10,6 @@ export class Curso {
     public hours?:number,
     public minutes?:number,
     public image?:File,
+    public alumnosSubs?:string[], // Contiene las id de los usuarios subscritos
   ){}
 }

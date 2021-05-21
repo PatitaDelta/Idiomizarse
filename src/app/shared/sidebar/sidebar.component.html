@@ -5,10 +5,10 @@
   <hr>
   <ul class="nav flex-column mb-auto" >
     <ng-container *ngFor="let item of menu">
-      <li class="nav-item align-items-center">
-        <a class="nav-link d-flex" routerLinkActive="text-warning" routerLink="{{item.url}}" [routerLinkActiveOptions]="{exact: true}">
-          <i class="{{item.icon}} mx-2"></i>
-          {{item.name}}
+      <li class="nav-item align-items-center" *ngIf="item.users.includes(userType)" >
+        <a class="nav-link link-light d-flex" routerLinkActive="text-warning" routerLink="{{item.url}}" [routerLinkActiveOptions]="{exact: true}">
+        <i class="{{item.icon}} mx-2"></i>
+        {{item.name}}
         </a>
       </li>
     </ng-container>

@@ -19,6 +19,10 @@ export class AuthGuard implements CanActivate {
       this.router.navigate(["/error"]);
       return false;
     }
+    else if (this.userSer.userType == "alumno" && (state.url.includes("/actividades/crear") || state.url.includes("/actividades/editar"))) {
+      this.router.navigate(["/error"]);
+      return false;
+    }
 
     return true;
 

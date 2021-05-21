@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { Actividad } from 'src/app/models/actividad';
+import { ActividadesService } from '../../actividades.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -6,11 +9,29 @@ import { Component, OnInit } from '@angular/core';
   styles: [
   ]
 })
-export class DashboardComponent implements OnInit {
+export class DashboardActividadesComponent implements OnInit {
 
-  constructor() { }
+  public myActividades:Actividad[] = [];
+  private myActividadesSubs!:Subscription;
 
-  ngOnInit(): void {
+  public loading:boolean = true;
+
+  constructor(private actividadesSer:ActividadesService) {}
+
+  ngOnInit(): void { 
+    this.getActividades();
+  }
+  
+  getActividades(){
+    this.myActividadesSubs = this.actividadesSer.getAllActividadesOfUser$().subscribe(
+      (list) =>{ 
+        this.myActividades = list;
+        this.loading = false;
+    })
+  }
+
+  ngOnDestroy(): void {
+    this.myActividadesSubs.unsubscribe();
   }
 
 }

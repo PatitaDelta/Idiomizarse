@@ -81,6 +81,14 @@ export class HttpService {
     )
   }
 
+  putPropertyById(nameTable: string, id: string, property:string ,item: Object): Observable<any> {
+    return this.http.put(this.url + "/" + nameTable + "/" + id + "/" + property + ".json",
+      item
+    ).pipe(
+      catchError((err)=> throwError(err))
+    )
+  }
+
   //************************************************************************************************
   //* DELETE ******************************************************************************************
   //************************************************************************************************

@@ -34,9 +34,6 @@
                                     <i class="bi bi-pencil-fill"></i>
                                     Guardar
                                 </button>
-                                <button type="button" (click)="tongleEditMode()" class="btn btn-primary waves-effect" *ngIf="editMode">
-                                    Cancelar
-                                </button>
                             </div>
                         </div>
                     </div>
@@ -77,12 +74,9 @@
                             <div class="row">
                                 <h6 class="col-sm-3 col-form-label">Email</h6>
                                 <div class="col-sm-9">
-                                    <input type="text"
+                                    <input type="text" class="text-light form-control-plaintext"
                                         formControlName="email"
-                                        [readonly]="!editMode" 
-                                        [class.text-secondary]="!editMode"
-                                        [class.form-control-plaintext]="!editMode" 
-                                        [class.form-control]="editMode" 
+                                        [readonly]="true" 
                                         value="{{usuario.email}}">
                                 </div>
                             </div>

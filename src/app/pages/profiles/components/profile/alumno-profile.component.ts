@@ -23,7 +23,7 @@ export class AlumnoProfileComponent implements OnInit, OnDestroy {
 
   public usuario!:Alumno | Profesor
   public userType!:string;
-  public editMode:boolean = false;
+  public editMode:boolean = true;
 
   public loadingCursos:boolean = true;
 
@@ -45,10 +45,10 @@ export class AlumnoProfileComponent implements OnInit, OnDestroy {
     this.userType = this.userSer.userType
 
     this.editForm = new FormGroup({
-      "dni": new FormControl(this.usuario.dni, [Validators.minLength(8)]),
-      "name": new FormControl(this.usuario.name, [Validators.minLength(4)]),
-      "email": new FormControl(this.usuario.email,[Validators.required, Validators.pattern(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)]),
-      "phone": new FormControl(this.usuario.phone, [Validators.minLength(9),Validators.maxLength(9), Validators.pattern(/[0-9]{9}/)]),
+      "dni": new FormControl(this.usuario.dni, [Validators.minLength(8),Validators.pattern(/^[0-9]{8,8}[A-Za-z]$/),Validators.required]),
+      "name": new FormControl(this.usuario.name, [Validators.minLength(4),Validators.required]),
+      "email": new FormControl(this.usuario.email,[Validators.pattern(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/),Validators.required]),
+      "phone": new FormControl(this.usuario.phone, [Validators.minLength(9),Validators.maxLength(9), Validators.pattern(/[0-9]{9}/),Validators.required]),
       "location": new FormControl(this.usuario.location),
       "foto": new FormControl(null),
     });
