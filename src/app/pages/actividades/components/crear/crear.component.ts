@@ -80,10 +80,10 @@ export class CrearActividadesComponent implements OnInit {
     this.loading = true;
 
     let actividad = new Actividad(
-      this.createForm.value.titulo.toLocaleLowerCase(),
-      this.createForm.value.tipo.toLocaleLowerCase(),
+      this.createForm.controls["titulo"].value.toLocaleLowerCase(),
+      this.createForm.controls["tipo"].value.toLocaleLowerCase(),
       this.createForm.controls["curso"].value,
-      this.createForm.value.media,
+      this.createForm.controls["media"].value,
       this.preguntas,
     );
     
@@ -95,6 +95,7 @@ export class CrearActividadesComponent implements OnInit {
       //Si lista actividades viene vacio y la rellenamos o añadimos
       if(this.editMode){
         actividad.id = this.actividadEdit.id;
+        actividad.media = this.actividadEdit.media;
       }else{
         if(!actividades){
           actividad.id = (Math.floor(Math.random() * 99999)+1).toString()
@@ -132,7 +133,6 @@ export class CrearActividadesComponent implements OnInit {
             //EDITA EN BD
             let posActividad = actividades.findIndex((act)=> act.id === actividad.id)
             actividades[posActividad] = actividad;
-            console.log(posActividad);
 
             this.editToBD(actividades);
           }else{
@@ -188,13 +188,12 @@ export class CrearActividadesComponent implements OnInit {
           timer: 1500,
         });
 
-        this.loading = false;
-
+        this.router.navigate(["/actividades/editar"]);
       }
     )
   }
 
-  onChangeType(type:"describir"|"video"|"otros"){
+  onChangeType(type:"describir"|"video"|"otros"|string){
     this.preViewVideo = "";
     this.preViewImg = "";
     this.toPreViewImg = "";
@@ -304,16 +303,18 @@ export class CrearActividadesComponent implements OnInit {
 
             this.createForm.controls["titulo"].setValue(actividad.title); 
             this.createForm.controls["tipo"].setValue(actividad.type);
+            this.createForm.controls["tipo"].disable()
             this.typeActiviti = this.actividadEdit.type;
             this.createForm.controls["curso"].setValue(actividad.curso);
             this.createForm.controls["curso"].disable()
             this.preguntas = actividad.preguntas;
-            this.createForm.controls["media"].setValue(actividad.media);
+            this.createForm.controls["media"].clearValidators();  
             
             if(this.typeActiviti === "video"){
               this.createForm.controls["media"].setValue(actividad.media);
               this.preViewVideo = this.sanitizer.bypassSecurityTrustResourceUrl(actividad.media)
             }else if(this.typeActiviti === "describir"){
+              this.toPreViewImg = actividad.media;
               this.preViewImg = this.sanitizer.bypassSecurityTrustUrl(actividad.media)
             }
 

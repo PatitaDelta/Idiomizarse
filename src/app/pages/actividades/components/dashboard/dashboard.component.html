@@ -34,13 +34,15 @@
                             </td>
                             <th>
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-outline-warning"
-                                        (click)="editActividad(y, actividad.curso)">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-outline-danger"
-                                        (click)="deleteActividad(x, y, actividad.curso)">                                        <i class="bi-trash-fill"></i>
-                                    </button>
+                                    <ng-container *ngIf="userType === 'profesor'">
+                                        <button type="button" class="btn btn-outline-warning"
+                                            (click)="editActividad(y, actividad.curso)">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-outline-danger"
+                                            (click)="deleteActividad(x, y, actividad.curso)">                                        <i class="bi-trash-fill"></i>
+                                        </button>
+                                    </ng-container>
                                     <button type="button" class="btn btn-outline-success">
                                         <i class="bi bi-play"></i>
                                     </button>

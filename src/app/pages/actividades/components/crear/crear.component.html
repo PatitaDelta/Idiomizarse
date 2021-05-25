@@ -89,6 +89,7 @@
                             *ngIf="typeActiviti === 'video' && preViewVideo">
                         </iframe>
                         <img [src]="preViewImg" width="300" height="300"
+                            onerror="this.src = '../../../../../assets/defaultIMG.svg'"
                             *ngIf="typeActiviti === 'describir' && preViewImg">
                     </div>
                 </div>

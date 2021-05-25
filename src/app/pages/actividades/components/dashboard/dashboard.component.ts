@@ -1,3 +1,4 @@
+import { UserService } from 'src/app/services/user.service';
 import { UploadFilesService } from 'src/app/services/upload-files.service';
 import { Curso } from 'src/app/models/curso';
 import { Component, OnInit } from '@angular/core';
@@ -21,10 +22,12 @@ export class DashboardActividadesComponent implements OnInit {
   private myCursosSubs!:Subscription;
 
   public loading:boolean = true;
+  public userType!:string;
 
-  constructor(private actividadesSer:ActividadesService, private router:Router, private upFileSer:UploadFilesService) {}
+  constructor(private actividadesSer:ActividadesService, private router:Router, private upFileSer:UploadFilesService, private userSer:UserService) {}
 
   ngOnInit(): void { 
+    this.userType = this.userSer.userType;
     this.getActividades();
     this.getCursos();
   }
