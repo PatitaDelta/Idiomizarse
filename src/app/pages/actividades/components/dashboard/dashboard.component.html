@@ -1,12 +1,55 @@
 <div class="row">
-    <div class="col-12">
-        <!-- <ng-container *ngFor="let actividad of myActividades"> -->
-            <div class="card">
-                <div class="card-tittle"></div>
-                <div class="card-body">
-                    <!-- <p>{{actividad}}</p> -->
+    <div class="col-12 p-0">
+        <div class="table-wrap">
+            <div *ngIf="loading && allActividades.length == 0" class="text-center">
+                <app-spinner></app-spinner>
+                <div>
+                    <h6>Enhorabuena, no tienes nada pendiente</h6>
                 </div>
             </div>
-        <!-- </ng-container> -->
+            <table *ngIf="!loading && allActividades.length > 0"  class="table table-bordered table-dark table-hover text-center">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Título</th>
+                        <th>Tipo</th>
+                        <!-- <th>Curso</th> -->
+                        <th>Nº Preguntas</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let actividades of allActividades; let x = index">
+                        <tr *ngFor="let actividad of actividades, let y = index" class="text-capitalize">
+                            <th scope="row"></th>
+                            <td >{{actividad.title}}</td>
+                            <td >{{actividad.type}}</td>
+                            <!-- <td>
+                                <div>
+                                    <label>{{a() | async}}</label>
+                                </div>
+                            </td> -->
+                            <td>
+                                {{actividad.preguntas.length}}
+                            </td>
+                            <th>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-outline-warning"
+                                        (click)="editActividad(y, actividad.curso)">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-danger"
+                                        (click)="deleteActividad(x, y, actividad.curso)">                                        <i class="bi-trash-fill"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-success">
+                                        <i class="bi bi-play"></i>
+                                    </button>
+                                </div>
+                            </th>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>

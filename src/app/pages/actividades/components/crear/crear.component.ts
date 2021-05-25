@@ -6,6 +6,8 @@ import { Curso } from './../../../../models/curso';
 import { Actividad } from 'src/app/models/actividad';
 import { UploadFilesService } from 'src/app/services/upload-files.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import Swal from 'sweetalert2';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-crear',
@@ -14,8 +16,14 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class CrearActividadesComponent implements OnInit {
 
-  public type:string = ""
+  public typeActiviti:string = ""
+  public loading:boolean = false;
+  public editMode:boolean = false;
+  
+  //Edit
+  public actividadEdit!:Actividad;
 
+  //Create
   public cursos:Curso[] = [];
 
   public preguntas:Pregunta[] = []
@@ -28,7 +36,7 @@ export class CrearActividadesComponent implements OnInit {
   public preViewImg!:any
   public preViewVideo!:any
 
-  public typesList:string[] = ["relacionar","video","otros"];
+  public typesList:string[] = ["describir","video","otros"];
   public createForm = new FormGroup({
   // Cabecera
     "titulo":new FormControl(null,[Validators.required]),
@@ -47,61 +55,91 @@ export class CrearActividadesComponent implements OnInit {
   });
 
   
-  constructor(private upFileSer:UploadFilesService, private actividadesSer:ActividadesService, private sanitizer:DomSanitizer) { }
+  constructor(
+    private upFileSer:UploadFilesService, 
+    private actividadesSer:ActividadesService, 
+    private sanitizer:DomSanitizer, 
+    private route:ActivatedRoute, private router:Router) { }
 
   ngOnInit(): void {
+
+    if(this.route.snapshot.url[0].path === "editar"){
+      this.loading = true;
+      this.editMode = true;
+      this.editActividad()
+    }
+
     this.actividadesSer.getCursosOf$().subscribe(
       (cursos)=>{
         this.cursos = cursos;
     });
   }
 
+
   onSubmit(){      
+    this.loading = true;
 
     let actividad = new Actividad(
       this.createForm.value.titulo.toLocaleLowerCase(),
       this.createForm.value.tipo.toLocaleLowerCase(),
-      this.createForm.value.curso,
+      this.createForm.controls["curso"].value,
       this.createForm.value.media,
       this.preguntas,
     );
-
+    
     //Coje la lista de todas las actividades del curso seleccionado
-    this.actividadesSer.getAllActividadesOfCurso$(this.createForm.value.curso+"").subscribe(
-      (actividades:Actividad[]) =>{
-
-      //COMPRUEBA
-      //Si viene vacio y la rellenamos
+    this.actividadesSer.getAllActividadesOfCurso$(this.createForm.controls["curso"].value+"").subscribe(
+      (actividades:Actividad[]) =>{      
+      //ASIGNA
+      //El id a actividades
+      //Si lista actividades viene vacio y la rellenamos o añadimos
+      if(this.editMode){
+        actividad.id = this.actividadEdit.id;
+      }else{
         if(!actividades){
           actividad.id = (Math.floor(Math.random() * 99999)+1).toString()
           actividades = [];
         }else{
           actividad.id = (actividades.length + Math.floor(Math.random() * 99999)+1).toString();
         }
+      }
+      
         
-      //EDITA
-      //Segun el tipo de activdad
-        if((this.type === "relacionar")){
-          this.uploadImg(actividad.id).then((resp:any)=>{                
+      //AÑADE
+      //Segun el tipo de actividad, el archivo a la BDz      
+        if(((this.typeActiviti === "describir" || this.typeActiviti === "otros") && this.fileUpload)){
+          this.uploadImg(actividad.id!).then((resp:any)=>{                
             this.upFileSer.downloadImg("actividades",resp.metadata.name).then(
               (url) => {
                 actividad.media = url;
-                actividades.push(actividad);
                 
-                //AÑADE
-                this.addToBD(actividades);
+                if(this.editMode){
+                  //EDITA EN BD
+                  let posActividad = actividades.findIndex((act)=> act.id == actividad.id)
+                  actividades[posActividad] = actividad;                  
+                  this.editToBD(actividades);
+                }
+                else{
+                //AGREGA A BD
+                  actividades.push(actividad);
+                  this.addToBD(actividades);
+                }
               });
-            });
+            });            
         }
-        else if(this.type === "otros"){
-        
-          //AÑADE
-          this.addToBD(actividades);
-        }else{
-          actividades.push(actividad);
-          
-          //AÑADE
-          this.addToBD(actividades);
+        else{
+          if(this.editMode){
+            //EDITA EN BD
+            let posActividad = actividades.findIndex((act)=> act.id === actividad.id)
+            actividades[posActividad] = actividad;
+            console.log(posActividad);
+
+            this.editToBD(actividades);
+          }else{
+            //AGREGA A BD
+            actividades.push(actividad);
+            this.addToBD(actividades);
+          }
         }   
 
       }
@@ -109,36 +147,71 @@ export class CrearActividadesComponent implements OnInit {
   }
 
   
-  //AÑADE
+  //AGREGA A BD
   //La lista actividades al curso seleccionado
   addToBD(actividades:Actividad[]){
-    this.actividadesSer.addActividades(actividades,this.createForm.value.curso+"").subscribe((resp)=>{
-      console.log(resp);
-      this.createForm.reset();
-      this.preguntas = [];
-    })
+    this.actividadesSer.addActividades(actividades,this.createForm.value.curso+"").subscribe(
+      (resp)=>{
+        console.log(resp);
+
+        Swal.fire({
+          title: 'Creado',
+          text: 'Creado correctamente',
+          icon: 'success',
+          confirmButtonText: 'Ok',
+          showConfirmButton: true,
+          timer: 1500,
+        });
+
+        this.createForm.reset();
+        this.typeActiviti = "";
+        this.preguntas = [];
+        this.loading = false;
+      }
+    );
   }
 
-  onChangeType(type:"relacionar"|"video"|"otros"){
+  //EDITA EN BD
+  editToBD(actividades:Actividad[]){
+    let posCurso = this.cursos.findIndex((c)=>c.id == this.createForm.controls["curso"].value);    
+    
+    this.actividadesSer.updateActividades(actividades,this.cursos[posCurso]).subscribe(
+      (resp) =>{
+        console.log(resp);
+
+        Swal.fire({
+          title: 'Editado',
+          text: 'Editado correctamente',
+          icon: 'success',
+          confirmButtonText: 'Ok',
+          showConfirmButton: true,
+          timer: 1500,
+        });
+
+        this.loading = false;
+
+      }
+    )
+  }
+
+  onChangeType(type:"describir"|"video"|"otros"){
     this.preViewVideo = "";
     this.preViewImg = "";
     this.toPreViewImg = "";
     this.createForm.controls["media"].reset();
 
-    this.type = type;
+    this.typeActiviti = type;
   }
-
-
 
 // MEDIA ************************************************************************
   
   preView(){
-    switch (this.type) {
+    switch (this.typeActiviti) {
       case "video":
         if(this.createForm.value.media)
           this.preViewVideo = this.sanitizer.bypassSecurityTrustResourceUrl(this.createForm.value.media)
         break;
-      case "relacionar":
+      case "describir":
         this.preViewImg = this.toPreViewImg;
         break;
     }
@@ -154,10 +227,11 @@ export class CrearActividadesComponent implements OnInit {
     reader.onloadend = () => {
       this.toPreViewImg = this.sanitizer.bypassSecurityTrustUrl(`${reader.result}`);
     }
+    
   }
 
   async uploadImg(idActividad:string){
-    return await this.upFileSer.uploadImg(this.fileUpload,"actividades",idActividad + this.createForm.value.curso)
+    return await this.upFileSer.uploadImg(this.fileUpload,"actividades",idActividad + this.createForm.controls["curso"].value)
   }
 
 // RESPUESTAS ************************************************************************
@@ -217,4 +291,41 @@ export class CrearActividadesComponent implements OnInit {
   deletePregunta(index:number){
     this.preguntas.splice(index,1);
   }
+
+  //EDITAR ************************************************************************
+    editActividad(){
+      const position = this.route.snapshot.params["id"];
+      const idCurso = this.route.snapshot.fragment;
+  
+      this.actividadesSer.getActividad$(idCurso,position).subscribe(
+        (actividad)=>{
+          if(actividad){
+            this.actividadEdit = actividad;
+
+            this.createForm.controls["titulo"].setValue(actividad.title); 
+            this.createForm.controls["tipo"].setValue(actividad.type);
+            this.typeActiviti = this.actividadEdit.type;
+            this.createForm.controls["curso"].setValue(actividad.curso);
+            this.createForm.controls["curso"].disable()
+            this.preguntas = actividad.preguntas;
+            this.createForm.controls["media"].setValue(actividad.media);
+            
+            if(this.typeActiviti === "video"){
+              this.createForm.controls["media"].setValue(actividad.media);
+              this.preViewVideo = this.sanitizer.bypassSecurityTrustResourceUrl(actividad.media)
+            }else if(this.typeActiviti === "describir"){
+              this.preViewImg = this.sanitizer.bypassSecurityTrustUrl(actividad.media)
+            }
+
+            this.loading = false;
+          } else {
+            this.router.navigate(["actividades/crear"]);
+          }
+        }, 
+      );
+  
+
+    }
 }
+
+

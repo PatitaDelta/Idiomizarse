@@ -53,6 +53,10 @@ export class HttpService {
     return this.http.get<{ [key: string]: any }>(`${this.url}/${nameTable}/${id}/${property}.json`)
   }
 
+  getItemFromPropertyList(nameTable: string, id:string, namelist:string, position:string): Observable<any>{
+    return this.http.get<{ [key: string]: any }>(`${this.url}/${nameTable}/${id}/${namelist}/${position}.json`)
+  }
+
   //************************************************************************************************
   //* POST ******************************************************************************************
   //************************************************************************************************
@@ -99,6 +103,10 @@ export class HttpService {
 
   deleteById(nameTable: string, id: string): Observable<any> {
     return this.http.delete(this.url + "/" + nameTable + "/" + id + ".json")
+  }
+
+  deleteItemInPropertyList(nameTable: string, id: string, propertyList:string, idItem:string): Observable<any>{
+    return this.http.delete(`${this.urlEndPoint}/${nameTable}/${id}/${propertyList}/${idItem}/.json`);
   }
 
 }

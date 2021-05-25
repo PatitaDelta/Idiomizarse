@@ -21,6 +21,10 @@ input.ng-invalid.ng-touched{
   background-color: rgb(241, 98, 63);
 }
 
+.bg-custom-light-orange{  
+  background-color:  #f39e6d;
+}
+
 .text-custom-orange{
   color: rgb(241, 98, 63);
 }
