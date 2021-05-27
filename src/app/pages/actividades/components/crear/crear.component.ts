@@ -1,13 +1,16 @@
-import { Pregunta } from './../../../../models/interfaces/pregunta';
-import { ActividadesService } from './../../actividades.service';
-import { FormGroup, FormControl, Validators} from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, Validators} from '@angular/forms';
+import { DomSanitizer } from '@angular/platform-browser';
+import { ActivatedRoute, Router } from '@angular/router';
+
+import { Pregunta } from './../../../../models/interfaces/pregunta';
 import { Curso } from './../../../../models/curso';
 import { Actividad } from 'src/app/models/actividad';
+
+import { ActividadesService } from './../../actividades.service';
 import { UploadFilesService } from 'src/app/services/upload-files.service';
-import { DomSanitizer } from '@angular/platform-browser';
+
 import Swal from 'sweetalert2';
-import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-crear',
@@ -59,7 +62,8 @@ export class CrearActividadesComponent implements OnInit {
     private upFileSer:UploadFilesService, 
     private actividadesSer:ActividadesService, 
     private sanitizer:DomSanitizer, 
-    private route:ActivatedRoute, private router:Router) { }
+    private route:ActivatedRoute, 
+    private router:Router) { }
 
   ngOnInit(): void {
 
@@ -86,6 +90,9 @@ export class CrearActividadesComponent implements OnInit {
       this.createForm.controls["media"].value,
       this.preguntas,
     );
+
+    console.log(this.createForm.controls.media.value, actividad);
+    
     
     //Coje la lista de todas las actividades del curso seleccionado
     this.actividadesSer.getAllActividadesOfCurso$(this.createForm.controls["curso"].value+"").subscribe(
@@ -95,7 +102,6 @@ export class CrearActividadesComponent implements OnInit {
       //Si lista actividades viene vacio y la rellenamos o añadimos
       if(this.editMode){
         actividad.id = this.actividadEdit.id;
-        actividad.media = this.actividadEdit.media;
       }else{
         if(!actividades){
           actividad.id = (Math.floor(Math.random() * 99999)+1).toString()
@@ -131,9 +137,11 @@ export class CrearActividadesComponent implements OnInit {
         else{
           if(this.editMode){
             //EDITA EN BD
-            let posActividad = actividades.findIndex((act)=> act.id === actividad.id)
+            let posActividad = actividades.findIndex((act)=> act.id == actividad.id)
             actividades[posActividad] = actividad;
 
+            console.log(actividades);
+            
             this.editToBD(actividades);
           }else{
             //AGREGA A BD
@@ -226,7 +234,10 @@ export class CrearActividadesComponent implements OnInit {
     reader.onloadend = () => {
       this.toPreViewImg = this.sanitizer.bypassSecurityTrustUrl(`${reader.result}`);
     }
-    
+  }
+
+  onChangePdf(event:any){
+    this.fileUpload = event.srcElement.files[0]
   }
 
   async uploadImg(idActividad:string){

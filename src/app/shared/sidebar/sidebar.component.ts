@@ -9,8 +9,7 @@ import { UserService } from 'src/app/services/user.service';
 export class SidebarComponent implements OnInit {
 
   public menu = [
-    {name:"Actividades", url:".", icon:"bi bi-file-earmark", users:["profesor","alumno"] },
-    {name:"Descargar", url:"./descargar", icon:"bi bi-cloud-arrow-down", users:["profesor","alumno"] },
+    {name:"Aprender", url:"./aprender", icon:"bi bi-book", users:["profesor","alumno"] },
     {name:"Crear", url:"./crear", icon:"bi bi-file-earmark-plus", users:["profesor"] },
     {name:"Editar", url:"./editar", icon:"bi bi-pencil-square", users:["profesor"] },
   ]

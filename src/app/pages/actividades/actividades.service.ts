@@ -30,7 +30,6 @@ export class ActividadesService {
       });
       
     return this.myActividades$;
-
   }
 
   getAllActividadesOfCurso$(cursoID:string){

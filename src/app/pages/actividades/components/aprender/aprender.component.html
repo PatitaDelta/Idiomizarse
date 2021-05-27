@@ -1,0 +1,62 @@
+
+<!-- Spinner ------------------------------------------------------ -->
+<div class="text-center" *ngIf="!actividad"> 
+    <app-spinner></app-spinner>
+</div>
+
+<div class="row" *ngIf="actividad">
+    <!-- Media ------------------------------------------------------ -->
+    <div class="col-md-6 ms-md-auto p-3 fade-in">
+        <img  width="100%" height="auto"
+                [src]="actividad.media"
+                onerror="this.src = '../../../../../assets/defaultIMG.svg'"
+                *ngIf="actividad.type === 'describir'">
+        <iframe  width="100%" height="420"
+                [src]="mediaSanaticer"
+                frameborder="0"   
+                *ngIf="actividad.type === 'video'">
+        </iframe>
+        <object [data]="this.mediaSanaticer" type="application/pdf" width="100%" height="800"
+                *ngIf="actividad.type === 'otros'">
+            <embed [src]="this.mediaSanaticer" type="application/pdf" />
+        </object>
+    </div>
+
+    <!-- Preguntas ------------------------------------------------------ -->
+    <form [formGroup]="preguntasForm" (ngSubmit)="comprobarResultado()" class="col-md-6 ms-md-auto p-3">
+        <ng-container *ngFor="let pregunta of actividad.preguntas; let i = index">
+            <div class="card bg-dark mb-2 border-0 fade-in">
+            <!-- Pregunta ------------------------------------------------------ -->
+                <div class="card-header bg-custom-orange d-flex justify-content-between" [id]="i+'correcta'">
+                    <h6 class="card-title"><span>Pregunta {{i+1}}</span></h6>
+                    <i [id]="i+'icon'" class="bi bi-pencil-square mx-2"></i>
+                </div>
+            <!-- Respuesta ------------------------------------------------------ -->
+                <div class="card-body">
+                    <label class="pb-1" class="mb-3">
+                        {{pregunta.enunciado}}
+                    </label> 
+
+                    <!-- Opciones ------------------------------------------------------ -->
+                    <select class="form-select" [formControlName]="i">
+                        <option value="null" default hidden>Seleciona respuesta</option>
+                        <option *ngFor="let respuesta of randomiceList(pregunta.respuestas)" 
+                            value="{{respuesta.respuesta}}" >
+                            {{respuesta.respuesta}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </ng-container>
+
+        <!-- Comprobar Resultados ------------------------------------------------------ -->
+        <div class="col-12 text-center">
+            <button type="submit" class="btn btn-success"
+                [disabled]="!preguntasForm.valid">
+                <i class="bi bi-check2-all"></i> 
+                Comprobar Aciertos
+            </button>
+        </div>
+    </form>
+</div>
+

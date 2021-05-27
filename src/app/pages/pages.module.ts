@@ -22,8 +22,8 @@ import { DashboardCursosComponent } from './cursos/components/dashboard/dashboar
 //Actividades
 import { ActividadesComponent } from './actividades/actividades.component';
 import { DashboardActividadesComponent } from './actividades/components/dashboard/dashboard.component';
-import { DescargarActividadesComponent } from './actividades/components/descargar/descargar.component';
 import { CrearActividadesComponent } from './actividades/components/crear/crear.component';
+import { AprenderComponent } from './actividades/components/aprender/aprender.component';
 
 
 @NgModule({
@@ -39,7 +39,7 @@ import { CrearActividadesComponent } from './actividades/components/crear/crear.
     ActividadesComponent,
     DashboardActividadesComponent,
     CrearActividadesComponent,
-    DescargarActividadesComponent,
+    AprenderComponent,
   ],
   imports: [
     PagesRoutingModule,

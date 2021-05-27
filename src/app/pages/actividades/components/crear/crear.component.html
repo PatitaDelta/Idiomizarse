@@ -7,7 +7,7 @@
     <form [formGroup]="createForm" (ngSubmit)="onSubmit()" *ngIf="!loading">
     
     <!-- Cabecera ---------------------------------------------------------------------------- -->
-        <div class="row card-header bg-warning text-dark">
+        <div class="row card-header bg-custom-orange text-light">
         
         <!-- Nombre ---------------------------------------------------------------------------- -->
             <div class="col-md-4 ms-md-auto ">
@@ -75,6 +75,7 @@
 
                         <input type="file" class="form-control" accept=".pdf"
                             formControlName="media"
+                            (change)="onChangePdf($event)"
                             *ngIf="typeActiviti == 'otros'">
 
                         <button class="btn btn-warning" type="button"
@@ -84,11 +85,11 @@
                         </button>
                     </div>
                     <div class="row">
-                        <iframe width="300" height="auto"
+                        <iframe width="100%" height="420"
                             [src]="preViewVideo"
                             *ngIf="typeActiviti === 'video' && preViewVideo">
                         </iframe>
-                        <img [src]="preViewImg" width="300" height="300"
+                        <img [src]="preViewImg" width="100%" height="300"
                             onerror="this.src = '../../../../../assets/defaultIMG.svg'"
                             *ngIf="typeActiviti === 'describir' && preViewImg">
                     </div>

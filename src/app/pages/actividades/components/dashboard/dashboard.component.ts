@@ -1,12 +1,15 @@
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+
+import { Curso } from 'src/app/models/curso';
+import { Actividad } from 'src/app/models/actividad';
+
 import { UserService } from 'src/app/services/user.service';
 import { UploadFilesService } from 'src/app/services/upload-files.service';
-import { Curso } from 'src/app/models/curso';
-import { Component, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { Actividad } from 'src/app/models/actividad';
 import { ActividadesService } from '../../actividades.service';
+
 import Swal from 'sweetalert2';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -23,11 +26,19 @@ export class DashboardActividadesComponent implements OnInit {
 
   public loading:boolean = true;
   public userType!:string;
+  public routeSnapshot!:string;
 
-  constructor(private actividadesSer:ActividadesService, private router:Router, private upFileSer:UploadFilesService, private userSer:UserService) {}
+  constructor(
+    private actividadesSer:ActividadesService, 
+    private router:Router,
+    private route:ActivatedRoute,
+    private upFileSer:UploadFilesService, 
+    private userSer:UserService) {}
 
   ngOnInit(): void { 
     this.userType = this.userSer.userType;
+    this.routeSnapshot = this.route.snapshot.url[0] ? this.route.snapshot.url[0].path : "actividades"
+    
     this.getActividades();
     this.getCursos();
   }
@@ -52,16 +63,18 @@ export class DashboardActividadesComponent implements OnInit {
     return this.myCursos.find((curso) => curso.id == id)!
   }
 
-  
+  goToAprender(actividadType:string, idActividad:string, idCurso:string){
+    this.router.navigate([`actividades/aprender/${actividadType}/${idActividad}`],{fragment:idCurso});
+  }
+
   editActividad(positionY:number, idCurso:string){
     this.router.navigate([`actividades/editar/${positionY}`],{fragment:idCurso});
   }
 
-  //Hacer que elimine tambien el archivo
   deleteActividad(positionX:number, positionY:number, idCurso:string){
     Swal.fire({
       title: 'Cuidado',
-      text: "Estas seguro de que quieres borrarlo",
+      text: "¿Estas seguro de que quieres borrarlo?",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
