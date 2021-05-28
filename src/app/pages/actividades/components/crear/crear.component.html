@@ -14,7 +14,7 @@
                 <label>Escribe un Título</label>
                 <input class="form-control" type="text" placeholder="Titulo"
                     formControlName="titulo">
-                <label class="text-danger" 
+                <label class="text-warning" 
                     *ngIf="!this.createForm.controls['titulo'].valid 
                         && this.createForm.controls['titulo'].touched">
                     * Este campo es obligatorio
@@ -28,7 +28,7 @@
                     (ngModelChange)="onChangeType($event)">
                     <option value="{{type}}" *ngFor="let type of typesList">{{type}}</option>
                 </select>
-                <label class="text-danger" 
+                <label class="text-warning" 
                     *ngIf="!this.createForm.controls['tipo'].valid 
                         && this.createForm.controls['tipo'].touched">
                     * Este campo es obligatorio
@@ -45,7 +45,7 @@
                         {{curso.name}}
                     </option>
                 </select>
-                <label class="text-danger" 
+                <label class="text-warning" 
                     *ngIf="!this.createForm.controls['curso'].valid 
                         && this.createForm.controls['curso'].touched">
                     * Este campo es obligatorio

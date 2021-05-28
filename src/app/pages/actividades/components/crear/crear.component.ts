@@ -215,8 +215,22 @@ export class CrearActividadesComponent implements OnInit {
   preView(){
     switch (this.typeActiviti) {
       case "video":
-        if(this.createForm.value.media)
-          this.preViewVideo = this.sanitizer.bypassSecurityTrustResourceUrl(this.createForm.value.media)
+        if(this.createForm.value.media){
+          let newUrlYoutube:string = "https://www.youtube.com/embed/";
+          let queryIdVideo:string = 
+            this.createForm.value.media.slice(
+              this.createForm.value.media.indexOf("v=")+2,
+              this.createForm.value.media.indexOf("&") != -1 ? this.createForm.value.media.indexOf("&") : this.createForm.value.media.length)
+
+          let queryTimeVideo:string = 
+            this.createForm.value.media.indexOf("&") != -1 
+              ? this.createForm.value.media.slice(this.createForm.value.media.indexOf("&")+3) 
+              : ""
+
+          newUrlYoutube += queryIdVideo
+
+          this.preViewVideo = this.sanitizer.bypassSecurityTrustResourceUrl(newUrlYoutube)
+        }
         break;
       case "describir":
         this.preViewImg = this.toPreViewImg;

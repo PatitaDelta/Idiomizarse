@@ -2,7 +2,7 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.5.
 
-You can try the page in 'https://idiomizarsebd.web.app'
+You can try the page in 'https://idiomizarsebd.firebaseapp.com'
 
 ## Development server
 
