@@ -5,7 +5,6 @@
 export const environment = {
   production: false,
   bd_url: "https://idiomizarsebd-default-rtdb.firebaseio.com/",
-  // bd_Clase_url: 'http://192.168.18.50:8080/api/',
   firebase_img_url:"https://firebasestorage.googleapis.com/v0/b/idiomizarsebd.appspot.com/o/",
   firebaseConfig : {
     apiKey: "AIzaSyA9iPcVUeytdjCcGGDYFH4URWEyVNpE4Dw",
