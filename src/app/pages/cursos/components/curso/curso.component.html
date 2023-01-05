@@ -1,0 +1,42 @@
+<div class="col" >
+  <div class="card shadow-sm bg-dark">
+
+    <app-edit-curso [curso]="curso" (close)="onCloseEditer($event)" *ngIf="editMode"></app-edit-curso>
+
+    <ng-container *ngIf="!editMode">
+      <img src={{curso.image}} onerror="this.src='../../assets/defaultIMG.svg'"  width="100%" height="225">
+
+      <div class="card-body">
+        <h5 class="card-title">{{curso.name}}</h5>
+        <p class="card-text">{{curso.description || 'No hay descripción'}}</p>
+
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="btn-group">
+
+            <!-- Opciones del PROFESOR -->
+            <ng-container *ngIf="userType == 'profesor' && canEdit">
+              <button type="button" class="btn btn-sm btn-outline-warning"
+                *ngIf="inMyList"
+                (click)="editMode = !editMode">Editar</button>
+            </ng-container>
+
+            <!-- Opciones del ALUMNO -->
+            <ng-container *ngIf="userType == 'alumno'" >
+              <button type="button" class="btn btn-sm btn-outline-warning" 
+                *ngIf="!inMyList && canAdd" 
+                (click)="onAddToUserCursos()">Añadir</button>
+
+              <button type="button" class="btn btn-sm btn-outline-danger" 
+                *ngIf="inMyList"
+                (click)="onDeleteToUserCursos()">Quitar</button>
+            </ng-container>
+
+
+          </div>
+          <small class="text-muted">{{curso.hours || '0' }}h {{curso.minutes || '0'}}m</small>
+        </div>
+      </div>
+    </ng-container>
+
+  </div>
+</div>

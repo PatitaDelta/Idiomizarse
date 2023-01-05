@@ -1,0 +1,16 @@
+{
+  "projects": {
+    "default": "idiomizarse",
+    "idiomizarse": "idiomizarse"
+  },
+  "targets": {
+    "idiomizarsebd": {
+      "hosting": {
+        "idiomizarse": [
+          "idiomizarsebd"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

@@ -1,0 +1,11 @@
+<section class="container">
+    <div class="app-search d-flex">
+        <input 
+            [(ngModel)]="inputSearch"
+            type="text" 
+            class="form-control" 
+            placeholder="{{placeholder}}"
+            (ngModelChange)="onSearch(inputSearch)"
+        > 
+    </div>
+</section>

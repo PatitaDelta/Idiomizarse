@@ -1,0 +1,56 @@
+<div class="backdrop" (click)="onClose()"></div>
+<div class="alert-box fade-in" >
+  <div class="d-flex justify-content-center" *ngIf="loading">
+    <div class="spinner-border text-warning m-5" style="width: 5rem; height: 5rem;">
+      <span class="sr-only" ></span>
+    </div>
+  </div>
+  <ng-container *ngIf="!loading">
+    <div class="alert-box-action">
+      <button type="button" class="btn bi bi-x-circle-fill" (click)="onClose()"></button>
+    </div>
+
+    <form class="form-signin text-center container col-12 col-md-8 col-xl-5"
+        [formGroup]="myForm"
+        (ngSubmit)="onSubmit()">
+      <h1 class="h3 mb-3 fw-normal">{{ isLogin ? 'Iniciar sesión' : 'Registrarse' }}</h1>
+      <hr>
+
+
+      <div class="form-group">
+        <label for="inputEmail" class="visually-hidden">Email</label>
+        <input type="email" id="inputEmail" class="form-control" placeholder="Email"
+            formControlName="email"
+            autofocus>
+      </div>
+
+      <ng-container formGroupName="pass-group">
+        <div class="form-group">
+          <label for="inputPassword" class="visually-hidden">Contrseña</label>
+          <input type="password" id="inputPassword" class="form-control" placeholder="Contraseña"
+            formControlName="password"
+            autocomplete="off"
+            >
+        </div>
+
+        <div class="form-group" *ngIf="!isLogin">
+          <label for="confirmPass" class="visually-hidden">Confirmar Contraseña</label>
+          <input type="password" id="inputConfirmPass" class="form-control" placeholder="Confirmar Contraseña"
+            required
+            formControlName="confirm-pass"
+            autocomplete="off" >
+        </div>
+      </ng-container>
+
+        <div class="form-group">
+          <div class="form-check form-check-inline" *ngFor="let type of typeUsers">
+            <input type="radio" name="typeUser" value="{{type}}" class="form-check-input"
+              formControlName="typeUser" required>
+            <label class="form-check-label text-capitalize">{{type}}</label>
+          </div>
+        </div>
+
+      <button class="btn btn-lg btn-warning my-4" type="submit" [disabled]="!this.myForm.valid">{{ isLogin ? 'Iniciar sesión' : 'Registrarse' }} </button>
+    </form>
+  </ng-container>
+</div>

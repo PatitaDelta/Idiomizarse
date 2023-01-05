@@ -1,0 +1,191 @@
+<div class="row min-vh-100 text-center">
+    <!-- Spinner ---------------------------------------------------------------------------- -->
+    <div *ngIf="loading">
+        <app-spinner></app-spinner>
+    </div>
+
+    <form [formGroup]="createForm" (ngSubmit)="onSubmit()" *ngIf="!loading">
+    
+    <!-- Cabecera ---------------------------------------------------------------------------- -->
+        <div class="row card-header bg-custom-orange text-light">
+        
+        <!-- Nombre ---------------------------------------------------------------------------- -->
+            <div class="col-md-4 ms-md-auto ">
+                <label>Escribe un Título</label>
+                <input class="form-control" type="text" placeholder="Titulo"
+                    formControlName="titulo">
+                <label class="text-warning" 
+                    *ngIf="!this.createForm.controls['titulo'].valid 
+                        && this.createForm.controls['titulo'].touched">
+                    * Este campo es obligatorio
+                </label>
+            </div>
+        <!-- Tipo ---------------------------------------------------------------------------- -->
+            <div class="col-md-5 ms-sm-auto">
+                <label>Selecciona el tipo de ejercicio</label>
+                <select class="form-select text-capitalize" 
+                    formControlName="tipo" 
+                    (ngModelChange)="onChangeType($event)">
+                    <option value="{{type}}" *ngFor="let type of typesList">{{type}}</option>
+                </select>
+                <label class="text-warning" 
+                    *ngIf="!this.createForm.controls['tipo'].valid 
+                        && this.createForm.controls['tipo'].touched">
+                    * Este campo es obligatorio
+                </label>
+            </div>
+
+        <!-- Curso ---------------------------------------------------------------------------- -->    
+            <div class="col-md-3 ms-md-auto">
+                <label>Selecciona el curso</label>
+                <select class="form-select text-capitalize" 
+                    formControlName="curso">
+                    <option value="{{curso.id}}" 
+                        *ngFor="let curso of cursos">
+                        {{curso.name}}
+                    </option>
+                </select>
+                <label class="text-warning" 
+                    *ngIf="!this.createForm.controls['curso'].valid 
+                        && this.createForm.controls['curso'].touched">
+                    * Este campo es obligatorio
+                </label>
+            </div>
+        </div>
+
+    <!-- Editor ------------------------------------------------------------------------ -->
+        <ng-container *ngIf="typeActiviti">
+            <div class="row card-body bg-dark">
+                
+            <!-- Imagen y Video ------------------------------------------------------------------------ -->
+                <div class="col-md-6 pb-3">
+                    <label class="text-danger" 
+                        *ngIf="!this.createForm.controls['media'].valid">
+                        * Este campo es obligatorio
+                    </label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Url vídeo"
+                            formControlName="media"
+                            *ngIf="typeActiviti == 'video'">
+
+                        <input type="file" class="form-control" accept="image/*"
+                            formControlName="media"
+                            (change)="onChangeImage($event)"
+                            *ngIf="typeActiviti == 'describir'">
+
+                        <input type="file" class="form-control" accept=".pdf"
+                            formControlName="media"
+                            (change)="onChangePdf($event)"
+                            *ngIf="typeActiviti == 'otros'">
+
+                        <button class="btn btn-warning" type="button"
+                            *ngIf="typeActiviti != 'otros'"
+                            (click)="preView()">
+                            Previsualizar
+                        </button>
+                    </div>
+                    <div class="row">
+                        <iframe width="100%" height="420"
+                            [src]="preViewVideo"
+                            *ngIf="typeActiviti === 'video' && preViewVideo">
+                        </iframe>
+                        <img [src]="preViewImg" width="100%" height="300"
+                            onerror="this.src = '../../../../../assets/defaultIMG.svg'"
+                            *ngIf="typeActiviti === 'describir' && preViewImg">
+                    </div>
+                </div>
+                
+            <!-- Creador ------------------------------------------------------------------------ -->
+                <div class="col-md-6 ms-md-auto">
+                    
+                <!-- Pregunta ------------------------------------------------------------------------ -->
+                    <div class="row">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Pregunta"
+                                formControlName="enunciado"
+                                >
+                        </div>
+                        <div class="input-group mb-3" formGroupName="respuestas">
+                            <input type="text" class="form-control" placeholder="Respuesta"
+                                formControlName="respuesta">
+                            <div class="input-group-text">
+                                <input type="checkbox" class="form-check-input mt-0" 
+                                    formControlName="correcta">
+                            </div>
+                        </div>
+                        <div class="btn-group">
+                            <input type="button" class="btn btn-warning" value="Añadir respuesta"
+                                [disabled]="!this.createForm.controls['respuestas'].valid"
+                                (click)="addRespuesta()">
+                        </div>
+                    </div>
+
+                <!-- Lista a subir ------------------------------------------------------------------------ -->
+                    <div class="row">
+                        <!-- Lista  ------------------------------------------------------------------------ -->
+                        <div class="list-group p-3">
+                            <ng-container *ngFor="let item of respuestas, let i = index">
+                                <label class="list-group-item d-flex justify-content-between">
+                                    <div>
+                                        <input type="checkbox" class="form-check-input me-1"
+                                            [checked]="item.correcta"
+                                            (change)="changeCorrecta(item.correcta,i)">
+                                        {{item.respuesta}}
+                                    </div>
+                                    <input type="button" class="btn btn-close me-1 "
+                                        (click)="deleteRespuesta(i)">
+                                </label>
+                            </ng-container>
+                        </div>
+
+                        <!-- Guardar ------------------------------------------------------------------------ -->
+                        <div class="btn-group">
+                            <input type="button" class="btn btn-success" value="Guardar pregunta"
+                                [disabled]="this.respuestas.length == 0 && this.enunciado.length == 0"
+                                (click)="guardarPreguntas()">
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+
+        <!-- Lista de todo ------------------------------------------------------------------------ -->
+            <div class="row">
+                <table class="table table-dark table-striped text-center">
+                    <thead>
+                        <tr>
+                            <th scope="col">Pregunta</th>
+                            <th scope="col">Respuesta</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="preguntas.length > 0">
+                        <tr *ngFor="let pregunta of preguntas, let i = index">
+                            <td>{{pregunta.enunciado}}</td>
+                            <td>
+                                <ng-container *ngFor="let item of pregunta.respuestas">
+                                    <h6 *ngIf="item.correcta">{{item.respuesta}}</h6>
+                                </ng-container>
+                            </td>
+                            <td>
+                                <button class="btn btn-outline-danger" 
+                                    (click)="deletePregunta(i)">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+    <!-- Btn Submit ------------------------------------------------------------------------ -->
+            <div class="d-grid gap-2 col-3 mx-auto">
+                <button type="submit" class="btn btn-success"
+                    [disabled]="!createForm.valid || this.preguntas.length == 0">
+                    <i class="bi bi-cloud-arrow-up-fill"></i>
+                    Subir
+                </button>
+            </div>
+        </ng-container>
+    </form>
+</div>

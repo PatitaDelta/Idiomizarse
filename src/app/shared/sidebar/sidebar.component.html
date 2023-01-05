@@ -1,0 +1,26 @@
+<div class="d-flex flex-column text-white p-3 bg-dark position-relative" style="width: 18vw; height:100%;" id="sidebar">
+  <a href="/" class="mx-3 mb-3 mb-md-0 text-white me-md-auto text-decoration-none">
+    <h4>Herramientas</h4>
+  </a>
+  <hr>
+  <ul class="nav flex-column mb-auto" >
+    <li class="nav-item align-items-center">
+      <a class="nav-link link-light d-flex" 
+        routerLinkActive="text-warning" 
+        routerLink="." 
+        [routerLinkActiveOptions]="{exact: true}">
+        <i class="bi bi-file-earmark mx-2"></i>
+          Actividades
+      </a>
+    </li>
+    <ng-container *ngFor="let item of menu">
+      <li class="nav-item align-items-center" *ngIf="item.users.includes(userType)" >
+        <a class="nav-link link-light d-flex" routerLinkActive="text-warning" routerLink="{{item.url}}">
+          <i class="{{item.icon}} mx-2"></i>
+          {{item.name}}
+        </a>
+      </li>
+    </ng-container>
+  </ul>
+  <hr>
+</div>

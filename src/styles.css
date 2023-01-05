@@ -1,0 +1,51 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~bootstrap-icons/font/bootstrap-icons.css";
+
+.cursor-point{
+  cursor: pointer;
+}
+
+input.ng-invalid.ng-touched{
+  border: 1px solid red;
+}
+
+.myActive{
+  background-color: #ffc107;
+}
+
+.bg-custom-dark{
+  background-color: rgb(110,115,118);
+}
+
+.bg-custom-orange{
+  background-color: rgb(241, 98, 63);
+}
+
+.bg-custom-light-orange{  
+  background-color:  #f39e6d;
+}
+
+.text-custom-orange{
+  color: rgb(241, 98, 63);
+}
+
+.bg-custom-blue{
+  background-color: rgb(74, 137, 189);
+}
+
+.bg-custom-lightblue{
+  background-color: rgb(153,206,212);
+}
+
+.bg-custom-pink{
+  background-color: rgb(240, 170, 202);
+}
+
+.fade-in {
+  animation: fadeIn 0.5s;
+  -webkit-animation: fadeIn 0.5s;
+}
+@keyframes fadeIn {
+  0% {opacity:0;}
+  100% {opacity:1;}
+}

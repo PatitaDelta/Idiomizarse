@@ -1,0 +1,18 @@
+<!-- Buscador -->
+
+<app-searcher (terms)="onSearch($event)" [found]="inputSearch" [placeholder]="'Buscar curso ...'" ></app-searcher>
+
+<!-- Listado -->
+
+<section class="album py-5">
+  <div class="col text-center" *ngIf="loading">
+    <app-spinner></app-spinner>
+  </div>
+
+  <div class="container" style="color:white">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+      <app-curso class="fade-in" [curso]="curso" [user]="userType" *ngFor="let curso of cursos"></app-curso>
+    </div>
+
+  </div>
+</section>
